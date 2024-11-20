@@ -48,12 +48,14 @@
 	<header class="border-b">
 		<div class="container mx-auto flex items-center justify-between p-4">
 			<img
-				src="/placeholder.svg?height=40&width=160"
+				src="https://via.placeholder.com/40x160"
 				alt="University of Groningen"
 				class="h-10 w-auto"
 			/>
 			<nav class="flex items-center gap-4">
-				<Button variant="default" class="bg-[#77c47d] hover:bg-[#68b56e]">Get a Label</Button>
+				<Button variant="default" class="bg-[#77c47d] hover:bg-[#68b56e]" href="/signup"
+					>Get a Label</Button
+				>
 				<Button variant="ghost">Results</Button>
 				<Button variant="ghost">About</Button>
 				<Button variant="ghost">Add your university</Button>
@@ -65,7 +67,7 @@
 		<section class="container mx-auto grid gap-8 px-4 py-16 md:grid-cols-2 md:items-center">
 			<div class="aspect-square rounded-lg bg-[#e5ebe5]">
 				<img
-					src="/placeholder.svg?height=400&width=400"
+					src="https://via.placeholder.com/400x400"
 					alt="Placeholder"
 					class="h-full w-full object-cover"
 				/>
@@ -78,7 +80,9 @@
 				</p>
 				<p class="font-medium">Submissions deadline are on 18/01/2024!</p>
 				<div class="flex gap-4">
-					<Button class="bg-[#77c47d] hover:bg-[#68b56e]">Get a Green Office Label</Button>
+					<Button class="bg-[#77c47d] hover:bg-[#68b56e]" href="/signup"
+						>Get a Green Office Label</Button
+					>
 					<Button variant="outline">See 2024 Rules</Button>
 				</div>
 				<div class="space-y-2">
@@ -164,7 +168,7 @@
 							<div class="text-center">
 								<div class="mb-4 inline-block overflow-hidden rounded-full">
 									<img
-										src="/placeholder.svg?height=80&width=80"
+										src="https://via.placeholder.com/80x80"
 										alt="Testimonial"
 										class="h-20 w-20 object-cover"
 									/>
@@ -211,7 +215,7 @@
 			<div class="container mx-auto grid gap-8 px-4 md:grid-cols-2 md:items-center">
 				<div class="aspect-square rounded-lg bg-white">
 					<img
-						src="/placeholder.svg?height=400&width=400"
+						src="https://via.placeholder.com/400x400"
 						alt="Features"
 						class="h-full w-full object-cover"
 					/>
@@ -236,7 +240,9 @@
 							Usability testing
 						</li>
 					</ul>
-					<Button class="bg-[#77c47d] hover:bg-[#68b56e]">Get a Green Office Label</Button>
+					<Button class="bg-[#77c47d] hover:bg-[#68b56e]" href="/signup"
+						>Get a Green Office Label</Button
+					>
 				</div>
 			</div>
 		</section>
@@ -247,7 +253,7 @@
 			<div class="grid gap-8 md:grid-cols-4">
 				<div class="space-y-4">
 					<img
-						src="/placeholder.svg?height=40&width=160"
+						src="https://via.placeholder.com/40x160"
 						alt="University of Groningen"
 						class="h-10 w-auto"
 					/>
