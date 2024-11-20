@@ -3,58 +3,103 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
-	import { cn } from '$lib/utils.js';
-
-	let className: string | undefined | null = undefined;
-	export { className as class };
+	import { enhance } from '$app/forms';
+	import type { ActionResult } from '@sveltejs/kit';
+	import * as Alert from '$lib/components/ui/alert';
+	import * as Card from '$lib/components/ui/card';
+	import { goto } from '$app/navigation';
 
 	let isLoading = false;
-	async function onSubmit() {
-		isLoading = true;
+	let error: string | null = null;
 
-		setTimeout(() => {
+	function handleEnhance() {
+		return async ({ result, update }: { result: ActionResult; update: () => Promise<void> }) => {
 			isLoading = false;
-		}, 3000);
+
+			if (result.type === 'failure') {
+				// Access the error from the form data
+				error = result.data?.error;
+			}
+			if (result.type === 'redirect') {
+				goto(result.location);
+				update();
+			}
+		};
 	}
 </script>
 
-<div class={cn('grid gap-6', className)} {...$$restProps}>
-	<form on:submit|preventDefault={onSubmit}>
-		<div class="grid gap-2">
-			<div class="grid gap-1">
-				<Label class="sr-only" for="email">Email</Label>
-				<Input
-					id="email"
-					placeholder="name@example.com"
-					type="email"
-					autocapitalize="none"
-					autocomplete="email"
-					autocorrect="off"
-					disabled={isLoading}
-				/>
-			</div>
-			<Button type="submit" disabled={isLoading}>
-				{#if isLoading}
-					<Icons.spinner class="mr-2 h-4 w-4 animate-spin" />
+<Card.Root class="mx-auto max-w-sm">
+	<form
+		action="?/signup"
+		method="POST"
+		use:enhance={handleEnhance}
+		on:submit={() => {
+			isLoading = true;
+			error = null;
+		}}
+	>
+		<Card.Header>
+			<Card.Title class="text-2xl">Create an account</Card.Title>
+			<Card.Description>Enter your name, email, and password below to sign up</Card.Description>
+		</Card.Header>
+		<Card.Content>
+			<div class="grid gap-4">
+				<div class="grid gap-2">
+					<Label for="email">Name</Label>
+					<Input
+						id="name"
+						name="name"
+						placeholder="John Doe"
+						type="text"
+						autocorrect="off"
+						disabled={isLoading}
+						required
+					/>
+				</div>
+				<div class="grid gap-2">
+					<Label for="email">Email</Label>
+					<Input
+						id="email"
+						name="email"
+						placeholder="youremail@example.com"
+						type="email"
+						autocapitalize="none"
+						autocomplete="email"
+						autocorrect="off"
+						disabled={isLoading}
+						required
+					/>
+				</div>
+				<div class="grid gap-2">
+					<div class="flex items-center">
+						<Label for="password">Password</Label>
+						<!-- <a href="##" class="ml-auto inline-block text-sm underline"> Forgot your password? </a> -->
+					</div>
+					<Input
+						id="password"
+						name="password"
+						placeholder="Password"
+						type="password"
+						disabled={isLoading}
+						required
+					/>
+				</div>
+				{#if error}
+					<Alert.Root variant="destructive">
+						<Alert.Description>{error}</Alert.Description>
+					</Alert.Root>
 				{/if}
-				Sign In with Email
-			</Button>
-		</div>
+				<Button type="submit" disabled={isLoading}>
+					{#if isLoading}
+						<Icons.spinner class="mr-2 h-4 w-4 animate-spin" />
+					{/if}
+					Sign Up
+				</Button>
+			</div>
+			<div class="mt-4 text-center text-sm">
+				Already have an account?
+				<a href="/login" class="underline"> Log in </a>
+			</div>
+		</Card.Content>
 	</form>
-	<div class="relative">
-		<div class="absolute inset-0 flex items-center">
-			<span class="w-full border-t"></span>
-		</div>
-		<div class="relative flex justify-center text-xs uppercase">
-			<span class="bg-background px-2 text-muted-foreground"> Or continue with </span>
-		</div>
-	</div>
-	<Button variant="outline" type="button" disabled={isLoading}>
-		{#if isLoading}
-			<Icons.spinner class="mr-2 h-4 w-4 animate-spin" />
-		{:else}
-			<Icons.gitHub class="mr-2 h-4 w-4" />
-		{/if}
-		GitHub
-	</Button>
-</div>
+</Card.Root>
