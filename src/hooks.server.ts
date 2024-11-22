@@ -7,7 +7,7 @@ export async function handle({ event, resolve }) {
         // for easy access in our other routes.
         event.locals.user = await account.get();
     } catch (error) {
-        console.error("Error creating session client:", error);
+        // console.error("Error creating session client:", error);
     }
 
     // Continue with the request.

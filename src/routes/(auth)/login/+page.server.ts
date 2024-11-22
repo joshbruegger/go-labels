@@ -2,10 +2,6 @@ import { SESSION_COOKIE, createAdminClient, ID } from "$lib/server/appwrite";
 import { fail, redirect } from "@sveltejs/kit";
 
 export async function load({ locals }) {
-    if (locals.user) {
-        console.log("User already logged in, redirecting to account.");
-        redirect(302, "/account");
-    }
 }
 
 export const actions = {
@@ -31,6 +27,6 @@ export const actions = {
                 error: error.message || 'Login failed'
             });
         }
-        redirect(302, "/account");
+        redirect(302, "/home");
     },
 };

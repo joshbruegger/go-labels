@@ -1,17 +1,12 @@
 // src/routes/account/+page.server.js
 
 import { SESSION_COOKIE, createSessionClient } from "$lib/server/appwrite";
+import { requireAuth } from "$lib/server/auth";
 import { redirect } from "@sveltejs/kit";
 
 export async function load({ locals }) {
-    if (!locals.user) {
-        console.log("User not logged in, redirecting to login.");
-        redirect(302, "/login");
-    }
-
-    console.log("Loading account for user:", locals.user);
     return {
-        user: locals.user,
+        user: locals.user
     };
 }
 
