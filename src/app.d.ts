@@ -12,8 +12,7 @@
 
 // export {};
 
-
-import type { Models } from "node-appwrite";
+import type { Models } from 'node-appwrite';
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
@@ -22,10 +21,12 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			user: Models.User<Models.Preferences> | undefined;
+			userdb: Databases | undefined;
+			admindb: Databases;
 		}
 		// interface PageData {}
 		// interface Platform {}
 	}
 }
 
-export { };
+export {};
