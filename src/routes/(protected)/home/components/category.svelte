@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { Card, CardContent, CardHeader } from '$lib/components/ui/card';
+	import type { CategorizedQuestions } from '$lib/models/data-model';
+	import type { ResponseSchema } from '../schema';
 	import QuestionnaireQuestion from './question.svelte';
-	import type { SuperForm } from 'sveltekit-superforms';
+	import type { Infer, SuperForm, SuperValidated } from 'sveltekit-superforms/client';
 
 	let { category, form } = $props<{
-		category: any;
-		form: SuperForm<any>;
+		category: CategorizedQuestions;
+		form: SuperForm<Infer<ResponseSchema>>;
 	}>();
 </script>
 

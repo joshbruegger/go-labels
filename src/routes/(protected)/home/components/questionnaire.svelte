@@ -1,15 +1,21 @@
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form';
-	import { superForm } from 'sveltekit-superforms';
+	import {
+		superForm,
+		type Infer,
+		type SuperForm,
+		type SuperValidated
+	} from 'sveltekit-superforms/client';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { responseSchema } from '../schema';
+	import { responseSchema, type ResponseSchema } from '../schema';
 	import QuestionnaireCategory from './category.svelte';
+	import type { CategorizedQuestions } from '$lib/models/data-model';
 
 	// Define the props interface
 	interface Props {
 		data: {
 			submissionId: string;
-			categories: any[];
+			categories: CategorizedQuestions[];
 			form: any;
 		};
 	}
