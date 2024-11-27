@@ -3,7 +3,7 @@ import { redirect, type Actions } from '@sveltejs/kit';
 import type { Category, Question, Choice, CategorizedQuestions } from '$lib/models/data-model';
 import { Databases, type Models } from 'node-appwrite';
 import { Query, ID } from 'node-appwrite';
-import { questionnaireSchema, responseSchema } from './questionnaire-schema';
+import { responseSchema } from './schema';
 import type { PageServerLoad } from './$types.js';
 import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -35,7 +35,7 @@ export const load: PageServerLoad = async (event) => {
 	return {
 		categories: questionnaire,
 		submissionId: submissionId,
-		form: await superValidate(zod(questionnaireSchema))
+		form: await superValidate(zod(responseSchema))
 	};
 };
 
@@ -77,7 +77,7 @@ export const actions: Actions = {
 		}
 	},
 	complete: async (event) => {
-		const form = await superValidate(event, zod(questionnaireSchema));
+		const form = await superValidate(event, zod(responseSchema));
 	},
 	default: async (event) => {
 		// Create the Appwrite client.
