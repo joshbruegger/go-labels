@@ -1,9 +1,23 @@
 {
 	"name": "go-labels",
-	"version": "0.0.1",
 	"type": "module",
 	"release": {
-		"analyzeCommits": "semantic-release-conventional-commits"
+		"dryRun": true,
+		"plugins": [
+			[
+				"@semantic-release/commit-analyzer",
+				{
+					"preset": "conventionalcommits"
+				}
+			],
+			[
+				"@semantic-release/release-notes-generator",
+				{
+					"preset": "conventionalcommits"
+				}
+			],
+			"@semantic-release/github"
+		]
 	},
 	"scripts": {
 		"dev": "vite dev",
@@ -21,6 +35,7 @@
 		"autoprefixer": "^10.4.20",
 		"bits-ui": "^1.0.0-next.64",
 		"clsx": "^2.1.1",
+		"conventional-changelog-conventionalcommits": "^8.0.0",
 		"embla-carousel-svelte": "^8.4.0",
 		"formsnap": "^2.0.0-next.1",
 		"lucide-svelte": "^0.460.1",
