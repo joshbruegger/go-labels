@@ -1,12 +1,12 @@
+import type { CategorizedQuestions } from '$lib/models/data-model';
 import { SESSION_COOKIE, createSessionClient } from '$lib/server/appwrite';
+import { fetchQuestionnaire } from '$lib/server/services/questionnaire';
 import { redirect, type Actions } from '@sveltejs/kit';
-import type { Category, Question, Choice, CategorizedQuestions } from '$lib/models/data-model';
-import { Databases, type Models } from 'node-appwrite';
-import { Query, ID } from 'node-appwrite';
-import { responseSchema } from './schema';
-import type { PageServerLoad } from './$types.js';
+import { Databases, ID, Query, type Models } from 'node-appwrite';
 import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import type { PageServerLoad } from './$types.js';
+import { responseSchema } from './schema';
 
 export const load: PageServerLoad = async (event) => {
 	const { locals } = event;
@@ -79,7 +79,7 @@ export const actions: Actions = {
 	complete: async (event) => {
 		const form = await superValidate(event, zod(responseSchema));
 	},
-	default: async (event) => {
+	logout: async (event) => {
 		// Create the Appwrite client.
 		const { account } = createSessionClient(event);
 
@@ -91,48 +91,3 @@ export const actions: Actions = {
 		redirect(302, '/login');
 	}
 };
-
-async function fetchQuestionnaire(databases: Databases) {
-	const categories = await databases.listDocuments('questionnaire', 'categories');
-
-	// Process each category and its related data
-	const categoriesWithQuestions: CategorizedQuestions[] = await Promise.all(
-		categories.documents.map(async (category) => {
-			const typedCategory = category as unknown as Category;
-			// Fetch questions for this category
-			const categoryQuestions = await databases.listDocuments('questionnaire', 'questions', [
-				Query.equal('category_id', category.$id),
-				Query.orderAsc('ordering')
-			]);
-
-			// Fetch and map choices for each question
-			const questionsWithChoices = await Promise.all(
-				categoryQuestions.documents.map(async (question) => {
-					const typedQuestion = question as unknown as Question;
-					const questionChoices = await databases.listDocuments('questionnaire', 'choices', [
-						Query.equal('question_id', typedQuestion.$id)
-					]);
-					const choices: Choice[] = questionChoices.documents.map((choice) => ({
-						...choice,
-						text: (choice as unknown as Choice).text,
-						isCorrect: (choice as unknown as Choice).isCorrect,
-						question_id: question.$id
-					}));
-					return {
-						...typedQuestion,
-						choices,
-						category_id: category.$id
-					};
-				})
-			);
-
-			return {
-				...category,
-				name: typedCategory.name,
-				order: typedCategory.order,
-				questions: questionsWithChoices
-			};
-		})
-	);
-	return categoriesWithQuestions;
-}
