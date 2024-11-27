@@ -2,6 +2,9 @@
 	"name": "go-labels",
 	"version": "0.0.1",
 	"type": "module",
+	"release": {
+		"analyzeCommits": "semantic-release-conventional-commits"
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -26,6 +29,7 @@
 		"prettier": "^3.3.2",
 		"prettier-plugin-svelte": "^3.2.6",
 		"prettier-plugin-tailwindcss": "^0.6.5",
+		"semantic-release": "^24.2.0",
 		"svelte": "^5.0.0",
 		"svelte-adapter-bun": "^0.5.2",
 		"svelte-check": "^4.0.0",
