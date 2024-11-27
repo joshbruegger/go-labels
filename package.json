@@ -2,7 +2,6 @@
 	"name": "go-labels",
 	"type": "module",
 	"release": {
-		"dryRun": true,
 		"plugins": [
 			[
 				"@semantic-release/commit-analyzer",
