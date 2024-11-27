@@ -1,12 +1,6 @@
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form';
-	import {
-		Card,
-		CardContent,
-		CardDescription,
-		CardHeader,
-		CardFooter
-	} from '$lib/components/ui/card';
+	import * as Card from '$lib/components/ui/card';
 	import { RadioGroup, RadioGroupItem } from '$lib/components/ui/radio-group';
 	import { Badge } from '$lib/components/ui/badge';
 	import { toast } from 'svelte-sonner';
@@ -28,18 +22,16 @@
 <Form.Field {form} name="question_id">
 	<Form.Control>
 		{#snippet children({ props })}
-			<Card>
-				<CardHeader>
-					<Form.Label>
-						<h3 class="mb-4 text-xl font-bold">
-							{question.text}
-						</h3>
-					</Form.Label>
-				</CardHeader>
-				<CardDescription>
-					{question.description}
-				</CardDescription>
-				<CardContent>
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>
+						{question.text}
+					</Card.Title>
+					<Card.Description>
+						{question.description}
+					</Card.Description>
+				</Card.Header>
+				<Card.Content>
 					<RadioGroup
 						{...props}
 						onValueChange={(value) => handleResponse(categoryId, question.$id, value)}
@@ -54,13 +46,13 @@
 							</div>
 						{/each}
 					</RadioGroup>
-				</CardContent>
-				<CardFooter>
+				</Card.Content>
+				<Card.Footer>
 					{#if question.requires_evidence}
 						<Badge variant="destructive">Requires Evidence</Badge>
 					{/if}
-				</CardFooter>
-			</Card>
+				</Card.Footer>
+			</Card.Root>
 		{/snippet}
 	</Form.Control>
 	<Form.FieldErrors />
