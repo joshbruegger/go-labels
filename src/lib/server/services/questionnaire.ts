@@ -8,7 +8,6 @@ export async function fetchQuestionnaire(databases: Databases) {
 	const categoriesWithQuestions: CategorizedQuestions[] = await Promise.all(
 		categories.documents.map(async (category) => {
 			const typedCategory = category as unknown as Category;
-			console.log(typedCategory);
 			// Fetch questions for this category
 			const categoryQuestions = await databases.listDocuments('questionnaire', 'questions', [
 				Query.equal('category_id', category.$id),
