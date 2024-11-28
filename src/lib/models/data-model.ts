@@ -4,7 +4,7 @@ import type { Models } from 'node-appwrite';
 export interface Category extends Models.Document {
 	name: string;
 	description?: string;
-	order: number;
+	ordering: number;
 }
 
 // Define the Question interface

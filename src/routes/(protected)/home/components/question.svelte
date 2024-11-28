@@ -7,10 +7,11 @@
 	import type { Infer, SuperValidated } from 'sveltekit-superforms/client';
 	import type { ResponseSchema } from '../schema';
 	import type { Question } from '$lib/models/data-model';
+	import type { FsSuperForm } from 'formsnap';
 
 	let { question, form, categoryId } = $props<{
 		question: Question;
-		form: SuperValidated<Infer<ResponseSchema>>;
+		form: FsSuperForm<Record<string, unknown>, any>;
 		categoryId: string;
 	}>();
 
@@ -25,7 +26,7 @@
 			<Card.Root>
 				<Card.Header>
 					<Card.Title>
-						{question.text}
+						{question.ordering}. {question.text}
 					</Card.Title>
 					<Card.Description>
 						{question.description}
