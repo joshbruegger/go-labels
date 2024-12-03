@@ -1,17 +1,24 @@
-<script lang="ts">
-	import Questionnaire from './components/questionnaire.svelte';
+<script>
+	export let data;
 
-	// Define the props interface
-	interface Props {
-		data: {
-			submissionId: string;
-			categories: any[];
-			form: any;
-		};
-	}
-
-	// Define the props
-	export let data: Props['data'];
+	const { user } = data;
 </script>
 
-<Questionnaire {data} />
+<ul>
+	<li>
+		<strong>Email:</strong>
+		{user.email}
+	</li>
+	<li>
+		<strong>Name:</strong>
+		{user.name}
+	</li>
+	<li>
+		<strong>ID: </strong>
+		{user.$id}
+	</li>
+</ul>
+
+<form method="post">
+	<button type="submit">Log out</button>
+</form>
