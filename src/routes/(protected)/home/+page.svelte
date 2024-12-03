@@ -19,6 +19,14 @@
 	</li>
 </ul>
 
-<form method="post">
-	<button type="submit">Log out</button>
-</form>
+<div class="flex flex-col gap-4">
+	<a href="/questionnaire" class="inline-block">
+		<button class="bg-primary text-primary-foreground hover:bg-primary/90">
+			Start Questionnaire
+		</button>
+	</a>
+
+	<form method="post">
+		<button type="submit">Log out</button>
+	</form>
+</div>
