@@ -21,7 +21,8 @@ export async function fetchQuestionnaire(databases: Databases) {
 				categoryQuestions.documents.map(async (question) => {
 					const typedQuestion = question as unknown as Question;
 					const questionChoices = await databases.listDocuments('questionnaire', 'choices', [
-						Query.equal('question_id', typedQuestion.$id)
+						Query.equal('question_id', typedQuestion.$id),
+						Query.orderDesc('points')
 					]);
 					const choices: Choice[] = questionChoices.documents.map((choice) => ({
 						...choice,

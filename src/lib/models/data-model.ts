@@ -22,7 +22,7 @@ export interface Question extends Models.Document {
 export interface Choice extends Models.Document {
 	question_id: string;
 	text: string;
-	isCorrect: boolean;
+	points: number;
 }
 
 // Organized interfaces for nested data structures
