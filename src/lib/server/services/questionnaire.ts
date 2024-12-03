@@ -2,7 +2,9 @@ import type { CategorizedQuestions, Category, Question, Choice } from '$lib/mode
 import { Query, type Databases } from 'node-appwrite';
 
 export async function fetchQuestionnaire(databases: Databases) {
-	const categories = await databases.listDocuments('questionnaire', 'categories');
+	const categories = await databases.listDocuments('questionnaire', 'categories', [
+		Query.orderAsc('ordering')
+	]);
 
 	// Process each category and its related data
 	const categoriesWithQuestions: CategorizedQuestions[] = await Promise.all(
