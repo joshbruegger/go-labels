@@ -27,7 +27,7 @@ export async function fetchQuestionnaire(databases: Databases) {
 					const choices: Choice[] = questionChoices.documents.map((choice) => ({
 						...choice,
 						text: (choice as unknown as Choice).text,
-						isCorrect: (choice as unknown as Choice).isCorrect,
+						points: (choice as unknown as Choice).points,
 						question_id: question.$id
 					}));
 					return {
