@@ -50,15 +50,14 @@
 					</Card.Description>
 				</Card.Header>
 				<Card.Content>
-					<RadioGroup.Root>
+					<ul class="list-disc pl-4 pt-2">
 						{#each question.choices as choice}
-							<div class="flex items-center space-x-2">
-								<RadioGroup.Item value={choice.$id} id={choice.$id} />
+							<li>
 								{choice.text}
 								<Badge variant="outline">{choice.points}</Badge>
-							</div>
+							</li>
 						{/each}
-					</RadioGroup.Root>
+					</ul>
 				</Card.Content>
 				<Card.Footer>
 					{#if question.requires_evidence}

@@ -1,10 +1,6 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
 	import * as RadioGroup from '$lib/components/ui/radio-group';
-	import { Badge } from '$lib/components/ui/badge';
-	import { toast } from 'svelte-sonner';
-	import { dndzone, overrideItemIdKeyNameBeforeInitialisingDndZones } from 'svelte-dnd-action';
-	import { flip } from 'svelte/animate';
 	import type { PageData } from '../$types';
 	import DraggableQuestions from './DraggableQuestions.svelte';
 
