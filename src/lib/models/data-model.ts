@@ -5,6 +5,7 @@ export interface Category extends Models.Document {
 	name: string;
 	description?: string;
 	ordering: number;
+	questions: Question[];
 }
 
 // Define the Question interface
@@ -16,6 +17,7 @@ export interface Question extends Models.Document {
 	requires_evidence: boolean;
 	description?: string;
 	explanation?: string;
+	choices: Choice[];
 }
 
 // Define the Choice interface
