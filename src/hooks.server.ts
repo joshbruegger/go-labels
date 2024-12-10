@@ -1,4 +1,5 @@
 import { createAdminClient, createSessionClient } from '$lib/server/appwrite';
+import { redirect } from '@sveltejs/kit';
 
 export async function handle({ event, resolve }) {
 	try {
@@ -10,6 +11,16 @@ export async function handle({ event, resolve }) {
 		event.locals.admindb = await createAdminClient().databases;
 	} catch (error) {
 		// console.error("Error creating session client:", error);
+	}
+
+	// Protect routes that require authentication.
+	if (event.route.id?.startsWith('/(protected)') && !event.locals.user) {
+		redirect(302, '/login');
+	}
+
+	// Redirect already logged in users to home when they try to access the login or sign up page.
+	if (event.route.id?.startsWith('/(auth)') && event.locals.user) {
+		redirect(302, '/home');
 	}
 
 	// Continue with the request.
