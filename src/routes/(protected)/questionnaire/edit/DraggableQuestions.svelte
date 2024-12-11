@@ -10,34 +10,44 @@
 		type Item
 	} from 'svelte-dnd-action';
 	import { flip } from 'svelte/animate';
-	import type { Question, QuestionWithChoices } from '$lib/models/data-model';
+	import type { Question } from '$lib/models/data-model';
 	import GripHorizontal from 'lucide-svelte/icons/grip-horizontal';
-	import { Input } from '$lib/components/ui/input';
-	overrideItemIdKeyNameBeforeInitialisingDndZones('$id'); // TODO: Add this top level?
 
-	let { questions = $bindable(), category } = $props();
+	type Props = {
+		categoryIdx: number;
+		questions: Question[];
+		fnUpdate: (categoryIdx: number, questions: Question[]) => void;
+	};
+	let { categoryIdx, questions = $bindable(), fnUpdate }: Props = $props();
+
+	// make reactive and update the state on page loads
+	let questionsReactive = $state(questions);
+	$effect(() => {
+		questionsReactive = questions;
+	});
 
 	const flipDurationMs = 300;
 
-	function handleDndConsider(e: CustomEvent<DndEvent<Item>>) {
-		questions = e.detail.items;
+	function handleDndConsider(e: CustomEvent<DndEvent<Question>>) {
+		questionsReactive = e.detail.items;
+		fnUpdate(categoryIdx, questions);
 	}
-	function handleDndFinalize(e: CustomEvent<DndEvent<Item>>) {
-		console.log('update questions for category: ', category);
-		console.log('old questions: ', questions);
-		console.log('new questions: ', e.detail.items);
-		questions = e.detail.items;
+	function handleDndFinalize(e: CustomEvent<DndEvent<Question>>) {
+		// console.log('old questions: ', questions);
+		// console.log('new questions: ', e.detail.items);
+		questionsReactive = e.detail.items;
+		fnUpdate(categoryIdx, questions);
 	}
 
 	let is_editing = false;
 </script>
 
 <div
-	use:dragHandleZone={{ items: questions, flipDurationMs: flipDurationMs }}
+	use:dragHandleZone={{ items: questionsReactive, flipDurationMs: flipDurationMs }}
 	onconsider={handleDndConsider}
 	onfinalize={handleDndFinalize}
 >
-	{#each questions as question (question.$id)}
+	{#each questionsReactive as question (question.$id)}
 		<div animate:flip={{ duration: flipDurationMs }}>
 			<Card.Root>
 				<Card.Header>
