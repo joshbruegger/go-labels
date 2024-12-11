@@ -9,7 +9,18 @@
 </script>
 
 {#await data.categories}
-	<Skeleton />
+	<div class="space-y-4">
+		{#each Array(3) as _}
+			<Card.Root class="mb-6 p-4">
+				<Card.Header>
+					<Skeleton class="h-6 w-48" />
+				</Card.Header>
+				<Card.Content>
+					<Skeleton class="h-24 w-full" />
+				</Card.Content>
+			</Card.Root>
+		{/each}
+	</div>
 {:then categories}
 	<div class="space-y-4">
 		{#each categories as category}
