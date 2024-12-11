@@ -1,10 +1,11 @@
 <script lang="ts">
-	import * as Card from '$lib/components/ui/card';
-	import DraggableQuestions from './DraggableQuestions.svelte';
-	import { Skeleton } from '$lib/components/ui/skeleton';
 	import CircleAlert from 'lucide-svelte/icons/circle-alert';
-	import * as Alert from '$lib/components/ui/alert';
+
 	import type { Category, Question } from '$lib/models/data-model';
+	import * as Alert from '$lib/components/ui/alert';
+	import * as Card from '$lib/components/ui/card';
+	import { Skeleton } from '$lib/components/ui/skeleton';
+	import DraggableQuestions from './DraggableQuestions.svelte';
 	import EditableQuestionnaire from './EditableQuestionnaire.svelte';
 
 	let { data } = $props();

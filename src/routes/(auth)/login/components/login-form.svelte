@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { Icons } from '$lib/components/ui/icons/index';
+	import type { ActionResult } from '@sveltejs/kit';
+
+	import { applyAction, enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
+	import * as Alert from '$lib/components/ui/alert';
 	import { Button } from '$lib/components/ui/button';
+	import * as Card from '$lib/components/ui/card';
+	import { Icons } from '$lib/components/ui/icons/index';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
-	import { applyAction, enhance } from '$app/forms';
-	import type { ActionResult } from '@sveltejs/kit';
-	import * as Alert from '$lib/components/ui/alert';
-	import * as Card from '$lib/components/ui/card';
-	import { goto } from '$app/navigation';
 
 	let isLoading = false;
 	let error: string | null = null;

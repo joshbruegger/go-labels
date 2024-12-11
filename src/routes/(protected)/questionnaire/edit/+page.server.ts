@@ -1,7 +1,8 @@
-import type { Category } from '$lib/models/data-model';
-import { Databases, ID, Query, type Models } from 'node-appwrite';
+import type { Models } from 'node-appwrite';
+import { Databases, ID, Query } from 'node-appwrite';
 
 import type { PageServerLoad } from './$types.js';
+import type { Category } from '$lib/models/data-model';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = locals.user as Models.User<Models.Preferences>;

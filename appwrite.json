@@ -1,605 +1,490 @@
 {
-    "projectId": "labels",
-    "projectName": "Labels",
-    "settings": {
-        "services": {
-            "account": true,
-            "avatars": true,
-            "databases": true,
-            "locale": true,
-            "health": true,
-            "storage": true,
-            "teams": true,
-            "users": true,
-            "functions": true,
-            "graphql": true,
-            "messaging": true
-        },
-        "auth": {
-            "methods": {
-                "jwt": false,
-                "phone": false,
-                "invites": false,
-                "anonymous": false,
-                "email-otp": false,
-                "magic-url": false,
-                "email-password": true
-            },
-            "security": {
-                "duration": 31536000,
-                "limit": 0,
-                "sessionsLimit": 10,
-                "passwordHistory": 0,
-                "passwordDictionary": true,
-                "personalDataCheck": false,
-                "sessionAlerts": false,
-                "mockNumbers": []
-            }
-        }
-    },
-    "databases": [
-        {
-            "$id": "questionnaire",
-            "name": "Questionnaire",
-            "enabled": true
-        }
-    ],
-    "collections": [
-        {
-            "$id": "questions",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "questionnaire",
-            "name": "questions",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "text",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null
-                },
-                {
-                    "key": "requires_evidence",
-                    "type": "boolean",
-                    "required": true,
-                    "array": false,
-                    "default": null
-                },
-                {
-                    "key": "explanation",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 65535,
-                    "default": null
-                },
-                {
-                    "key": "category_id",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 40,
-                    "default": null
-                },
-                {
-                    "key": "type",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "elements": [
-                        "multiple-choice",
-                        "open"
-                    ],
-                    "format": "enum",
-                    "default": null
-                },
-                {
-                    "key": "conditional_on_questions",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 30,
-                    "default": null
-                },
-                {
-                    "key": "conditional_on_choices",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 30,
-                    "default": null
-                },
-                {
-                    "key": "ordering",
-                    "type": "integer",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 9223372036854775807,
-                    "default": null
-                },
-                {
-                    "key": "description",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null
-                },
-                {
-                    "key": "allows_na",
-                    "type": "boolean",
-                    "required": true,
-                    "array": false,
-                    "default": null
-                },
-                {
-                    "key": "na_text",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "text",
-                    "type": "fulltext",
-                    "status": "available",
-                    "attributes": [
-                        "text"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "requires_evidence",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "requires_evidence"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "ordering",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "ordering"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "ordering_unique",
-                    "type": "unique",
-                    "status": "available",
-                    "attributes": [
-                        "ordering",
-                        "category_id"
-                    ],
-                    "orders": [
-                        "ASC",
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "category",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "category_id"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "type",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "type"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "categories",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "questionnaire",
-            "name": "categories",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null
-                },
-                {
-                    "key": "description",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 255,
-                    "default": null
-                },
-                {
-                    "key": "ordering",
-                    "type": "integer",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 9223372036854775807,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "name_unique",
-                    "type": "unique",
-                    "status": "available",
-                    "attributes": [
-                        "name"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "name",
-                    "type": "fulltext",
-                    "status": "available",
-                    "attributes": [
-                        "name"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "ordering_unique",
-                    "type": "unique",
-                    "status": "available",
-                    "attributes": [
-                        "ordering"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "responses",
-            "$permissions": [],
-            "databaseId": "questionnaire",
-            "name": "responses",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "submission_id",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 30,
-                    "default": null
-                },
-                {
-                    "key": "question_id",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 30,
-                    "default": null
-                },
-                {
-                    "key": "choice_id",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 30,
-                    "default": null
-                },
-                {
-                    "key": "evidence_ids",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 30,
-                    "default": null
-                },
-                {
-                    "key": "open_text",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 65535,
-                    "default": null
-                },
-                {
-                    "key": "na_reason",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 65535,
-                    "default": null
-                },
-                {
-                    "key": "manual_points",
-                    "type": "integer",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 9223372036854775807,
-                    "default": null
-                },
-                {
-                    "key": "manual_points_explanation",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 65535,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "submission",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "submission_id"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "question",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "question_id"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "choice",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "choice_id"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "submission_question",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "submission_id",
-                        "question_id"
-                    ],
-                    "orders": [
-                        "ASC",
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "question_choice",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "question_id",
-                        "choice_id"
-                    ],
-                    "orders": [
-                        "ASC",
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "submission_question_unique",
-                    "type": "unique",
-                    "status": "available",
-                    "attributes": [
-                        "submission_id",
-                        "question_id"
-                    ],
-                    "orders": [
-                        "ASC",
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "submissions",
-            "$permissions": [],
-            "databaseId": "questionnaire",
-            "name": "submissions",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "user_id",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 30,
-                    "default": null
-                },
-                {
-                    "key": "stage",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "elements": [
-                        "draft",
-                        "submitted",
-                        "reviewed"
-                    ],
-                    "format": "enum",
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "user",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "user_id"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "stage",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "stage"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "user_stage",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "user_id",
-                        "stage"
-                    ],
-                    "orders": [
-                        "ASC",
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "choices",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "questionnaire",
-            "name": "choices",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "text",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 255,
-                    "default": null
-                },
-                {
-                    "key": "points",
-                    "type": "integer",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 9223372036854775807,
-                    "default": null
-                },
-                {
-                    "key": "question_id",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 30,
-                    "default": null
-                },
-                {
-                    "key": "requires_manual_points",
-                    "type": "boolean",
-                    "required": true,
-                    "array": false,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "question",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "question_id"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "points",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "points"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "question_points",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "question_id",
-                        "points"
-                    ],
-                    "orders": [
-                        "ASC",
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "question_text_unique",
-                    "type": "unique",
-                    "status": "available",
-                    "attributes": [
-                        "question_id",
-                        "text"
-                    ],
-                    "orders": [
-                        "ASC",
-                        "ASC"
-                    ]
-                }
-            ]
-        }
-    ]
+	"projectId": "labels",
+	"projectName": "Labels",
+	"settings": {
+		"services": {
+			"account": true,
+			"avatars": true,
+			"databases": true,
+			"locale": true,
+			"health": true,
+			"storage": true,
+			"teams": true,
+			"users": true,
+			"functions": true,
+			"graphql": true,
+			"messaging": true
+		},
+		"auth": {
+			"methods": {
+				"jwt": false,
+				"phone": false,
+				"invites": false,
+				"anonymous": false,
+				"email-otp": false,
+				"magic-url": false,
+				"email-password": true
+			},
+			"security": {
+				"duration": 31536000,
+				"limit": 0,
+				"sessionsLimit": 10,
+				"passwordHistory": 0,
+				"passwordDictionary": true,
+				"personalDataCheck": false,
+				"sessionAlerts": false,
+				"mockNumbers": []
+			}
+		}
+	},
+	"databases": [
+		{
+			"$id": "questionnaire",
+			"name": "Questionnaire",
+			"enabled": true
+		}
+	],
+	"collections": [
+		{
+			"$id": "questions",
+			"$permissions": ["read(\"any\")"],
+			"databaseId": "questionnaire",
+			"name": "questions",
+			"enabled": true,
+			"documentSecurity": false,
+			"attributes": [
+				{
+					"key": "text",
+					"type": "string",
+					"required": true,
+					"array": false,
+					"size": 255,
+					"default": null
+				},
+				{
+					"key": "requires_evidence",
+					"type": "boolean",
+					"required": true,
+					"array": false,
+					"default": null
+				},
+				{
+					"key": "explanation",
+					"type": "string",
+					"required": false,
+					"array": false,
+					"size": 65535,
+					"default": null
+				},
+				{
+					"key": "category_id",
+					"type": "string",
+					"required": true,
+					"array": false,
+					"size": 40,
+					"default": null
+				},
+				{
+					"key": "type",
+					"type": "string",
+					"required": true,
+					"array": false,
+					"elements": ["multiple-choice", "open"],
+					"format": "enum",
+					"default": null
+				},
+				{
+					"key": "conditional_on_questions",
+					"type": "string",
+					"required": false,
+					"array": true,
+					"size": 30,
+					"default": null
+				},
+				{
+					"key": "conditional_on_choices",
+					"type": "string",
+					"required": false,
+					"array": true,
+					"size": 30,
+					"default": null
+				},
+				{
+					"key": "ordering",
+					"type": "integer",
+					"required": true,
+					"array": false,
+					"min": 0,
+					"max": 9223372036854775807,
+					"default": null
+				},
+				{
+					"key": "description",
+					"type": "string",
+					"required": false,
+					"array": false,
+					"size": 255,
+					"default": null
+				},
+				{
+					"key": "allows_na",
+					"type": "boolean",
+					"required": true,
+					"array": false,
+					"default": null
+				},
+				{
+					"key": "na_text",
+					"type": "string",
+					"required": false,
+					"array": false,
+					"size": 255,
+					"default": null
+				}
+			],
+			"indexes": [
+				{
+					"key": "text",
+					"type": "fulltext",
+					"status": "available",
+					"attributes": ["text"],
+					"orders": ["ASC"]
+				},
+				{
+					"key": "requires_evidence",
+					"type": "key",
+					"status": "available",
+					"attributes": ["requires_evidence"],
+					"orders": ["ASC"]
+				},
+				{
+					"key": "ordering",
+					"type": "key",
+					"status": "available",
+					"attributes": ["ordering"],
+					"orders": ["ASC"]
+				},
+				{
+					"key": "ordering_unique",
+					"type": "unique",
+					"status": "available",
+					"attributes": ["ordering", "category_id"],
+					"orders": ["ASC", "ASC"]
+				},
+				{
+					"key": "category",
+					"type": "key",
+					"status": "available",
+					"attributes": ["category_id"],
+					"orders": ["ASC"]
+				},
+				{
+					"key": "type",
+					"type": "key",
+					"status": "available",
+					"attributes": ["type"],
+					"orders": ["ASC"]
+				}
+			]
+		},
+		{
+			"$id": "categories",
+			"$permissions": ["read(\"any\")"],
+			"databaseId": "questionnaire",
+			"name": "categories",
+			"enabled": true,
+			"documentSecurity": false,
+			"attributes": [
+				{
+					"key": "name",
+					"type": "string",
+					"required": true,
+					"array": false,
+					"size": 255,
+					"default": null
+				},
+				{
+					"key": "description",
+					"type": "string",
+					"required": false,
+					"array": false,
+					"size": 255,
+					"default": null
+				},
+				{
+					"key": "ordering",
+					"type": "integer",
+					"required": true,
+					"array": false,
+					"min": 0,
+					"max": 9223372036854775807,
+					"default": null
+				}
+			],
+			"indexes": [
+				{
+					"key": "name_unique",
+					"type": "unique",
+					"status": "available",
+					"attributes": ["name"],
+					"orders": ["ASC"]
+				},
+				{
+					"key": "name",
+					"type": "fulltext",
+					"status": "available",
+					"attributes": ["name"],
+					"orders": ["ASC"]
+				},
+				{
+					"key": "ordering_unique",
+					"type": "unique",
+					"status": "available",
+					"attributes": ["ordering"],
+					"orders": ["ASC"]
+				}
+			]
+		},
+		{
+			"$id": "responses",
+			"$permissions": [],
+			"databaseId": "questionnaire",
+			"name": "responses",
+			"enabled": true,
+			"documentSecurity": false,
+			"attributes": [
+				{
+					"key": "submission_id",
+					"type": "string",
+					"required": true,
+					"array": false,
+					"size": 30,
+					"default": null
+				},
+				{
+					"key": "question_id",
+					"type": "string",
+					"required": true,
+					"array": false,
+					"size": 30,
+					"default": null
+				},
+				{
+					"key": "choice_id",
+					"type": "string",
+					"required": false,
+					"array": false,
+					"size": 30,
+					"default": null
+				},
+				{
+					"key": "evidence_ids",
+					"type": "string",
+					"required": false,
+					"array": true,
+					"size": 30,
+					"default": null
+				},
+				{
+					"key": "open_text",
+					"type": "string",
+					"required": false,
+					"array": false,
+					"size": 65535,
+					"default": null
+				},
+				{
+					"key": "na_reason",
+					"type": "string",
+					"required": false,
+					"array": false,
+					"size": 65535,
+					"default": null
+				},
+				{
+					"key": "manual_points",
+					"type": "integer",
+					"required": false,
+					"array": false,
+					"min": 0,
+					"max": 9223372036854775807,
+					"default": null
+				},
+				{
+					"key": "manual_points_explanation",
+					"type": "string",
+					"required": false,
+					"array": false,
+					"size": 65535,
+					"default": null
+				}
+			],
+			"indexes": [
+				{
+					"key": "submission",
+					"type": "key",
+					"status": "available",
+					"attributes": ["submission_id"],
+					"orders": ["ASC"]
+				},
+				{
+					"key": "question",
+					"type": "key",
+					"status": "available",
+					"attributes": ["question_id"],
+					"orders": ["ASC"]
+				},
+				{
+					"key": "choice",
+					"type": "key",
+					"status": "available",
+					"attributes": ["choice_id"],
+					"orders": ["ASC"]
+				},
+				{
+					"key": "submission_question",
+					"type": "key",
+					"status": "available",
+					"attributes": ["submission_id", "question_id"],
+					"orders": ["ASC", "ASC"]
+				},
+				{
+					"key": "question_choice",
+					"type": "key",
+					"status": "available",
+					"attributes": ["question_id", "choice_id"],
+					"orders": ["ASC", "ASC"]
+				},
+				{
+					"key": "submission_question_unique",
+					"type": "unique",
+					"status": "available",
+					"attributes": ["submission_id", "question_id"],
+					"orders": ["ASC", "ASC"]
+				}
+			]
+		},
+		{
+			"$id": "submissions",
+			"$permissions": [],
+			"databaseId": "questionnaire",
+			"name": "submissions",
+			"enabled": true,
+			"documentSecurity": false,
+			"attributes": [
+				{
+					"key": "user_id",
+					"type": "string",
+					"required": true,
+					"array": false,
+					"size": 30,
+					"default": null
+				},
+				{
+					"key": "stage",
+					"type": "string",
+					"required": true,
+					"array": false,
+					"elements": ["draft", "submitted", "reviewed"],
+					"format": "enum",
+					"default": null
+				}
+			],
+			"indexes": [
+				{
+					"key": "user",
+					"type": "key",
+					"status": "available",
+					"attributes": ["user_id"],
+					"orders": ["ASC"]
+				},
+				{
+					"key": "stage",
+					"type": "key",
+					"status": "available",
+					"attributes": ["stage"],
+					"orders": ["ASC"]
+				},
+				{
+					"key": "user_stage",
+					"type": "key",
+					"status": "available",
+					"attributes": ["user_id", "stage"],
+					"orders": ["ASC", "ASC"]
+				}
+			]
+		},
+		{
+			"$id": "choices",
+			"$permissions": ["read(\"any\")"],
+			"databaseId": "questionnaire",
+			"name": "choices",
+			"enabled": true,
+			"documentSecurity": false,
+			"attributes": [
+				{
+					"key": "text",
+					"type": "string",
+					"required": true,
+					"array": false,
+					"size": 255,
+					"default": null
+				},
+				{
+					"key": "points",
+					"type": "integer",
+					"required": true,
+					"array": false,
+					"min": 0,
+					"max": 9223372036854775807,
+					"default": null
+				},
+				{
+					"key": "question_id",
+					"type": "string",
+					"required": true,
+					"array": false,
+					"size": 30,
+					"default": null
+				},
+				{
+					"key": "requires_manual_points",
+					"type": "boolean",
+					"required": true,
+					"array": false,
+					"default": null
+				}
+			],
+			"indexes": [
+				{
+					"key": "question",
+					"type": "key",
+					"status": "available",
+					"attributes": ["question_id"],
+					"orders": ["ASC"]
+				},
+				{
+					"key": "points",
+					"type": "key",
+					"status": "available",
+					"attributes": ["points"],
+					"orders": ["ASC"]
+				},
+				{
+					"key": "question_points",
+					"type": "key",
+					"status": "available",
+					"attributes": ["question_id", "points"],
+					"orders": ["ASC", "ASC"]
+				},
+				{
+					"key": "question_text_unique",
+					"type": "unique",
+					"status": "available",
+					"attributes": ["question_id", "text"],
+					"orders": ["ASC", "ASC"]
+				}
+			]
+		}
+	]
 }

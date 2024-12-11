@@ -1,5 +1,6 @@
-import { createAdminClient, createSessionClient } from '$lib/server/appwrite';
 import { redirect } from '@sveltejs/kit';
+
+import { createAdminClient, createSessionClient } from '$lib/server/appwrite';
 
 export async function handle({ event, resolve }) {
 	try {

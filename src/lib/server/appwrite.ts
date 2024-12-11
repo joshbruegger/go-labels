@@ -1,8 +1,9 @@
 // src/lib/server/appwrite.js
-import { Client, Account, Databases, Users } from 'node-appwrite';
+import { Account, Client, Databases, Users } from 'node-appwrite';
+
+import type { RequestEvent } from '../../routes/$types';
 import { APPWRITE_KEY } from '$env/static/private';
 import { PUBLIC_APPWRITE_ENDPOINT, PUBLIC_APPWRITE_PROJECT } from '$env/static/public';
-import type { RequestEvent } from '../../routes/$types';
 
 export const SESSION_COOKIE = 'my-custom-session';
 

@@ -1,17 +1,17 @@
 <script lang="ts">
-	import * as Card from '$lib/components/ui/card';
-	import { Badge } from '$lib/components/ui/badge';
+	import type { DndEvent, Item } from 'svelte-dnd-action';
+	import GripHorizontal from 'lucide-svelte/icons/grip-horizontal';
 	import {
 		dndzone,
 		dragHandle,
 		dragHandleZone,
-		overrideItemIdKeyNameBeforeInitialisingDndZones,
-		type DndEvent,
-		type Item
+		overrideItemIdKeyNameBeforeInitialisingDndZones
 	} from 'svelte-dnd-action';
 	import { flip } from 'svelte/animate';
+
 	import type { Question } from '$lib/models/data-model';
-	import GripHorizontal from 'lucide-svelte/icons/grip-horizontal';
+	import { Badge } from '$lib/components/ui/badge';
+	import * as Card from '$lib/components/ui/card';
 
 	type Props = {
 		categoryIdx: number;

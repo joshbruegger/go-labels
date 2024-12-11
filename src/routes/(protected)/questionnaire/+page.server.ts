@@ -1,11 +1,14 @@
-import type { CategorizedQuestions } from '$lib/models/data-model';
-import { SESSION_COOKIE, createSessionClient } from '$lib/server/appwrite';
-import { fetchQuestionnaire } from '$lib/server/services/questionnaire';
-import { redirect, type Actions } from '@sveltejs/kit';
-import { Databases, ID, Query, type Models } from 'node-appwrite';
+import type { Actions } from '@sveltejs/kit';
+import type { Models } from 'node-appwrite';
+import { redirect } from '@sveltejs/kit';
+import { Databases, ID, Query } from 'node-appwrite';
 import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+
 import type { PageServerLoad } from './$types.js';
+import type { CategorizedQuestions } from '$lib/models/data-model';
+import { createSessionClient, SESSION_COOKIE } from '$lib/server/appwrite';
+import { fetchQuestionnaire } from '$lib/server/services/questionnaire';
 import { responseSchema } from './schema';
 
 export const load: PageServerLoad = async (event) => {

@@ -1,5 +1,6 @@
-import { SESSION_COOKIE, createAdminClient, ID } from '$lib/server/appwrite';
 import { fail, redirect } from '@sveltejs/kit';
+
+import { createAdminClient, ID, SESSION_COOKIE } from '$lib/server/appwrite';
 
 export async function load({ locals }) {}
 

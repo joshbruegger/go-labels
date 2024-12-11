@@ -1,6 +1,6 @@
 <script lang="ts">
-	import SignupForm from './components/signup-form.svelte';
 	import { Button } from '$lib/components/ui/button';
+	import SignupForm from './components/signup-form.svelte';
 </script>
 
 <div class="md:hidden">

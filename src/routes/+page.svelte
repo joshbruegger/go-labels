@@ -1,14 +1,15 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { Button } from '$lib/components/ui/button';
-	import { Card, CardContent } from '$lib/components/ui/card';
-	import { Input } from '$lib/components/ui/input';
+	import BarChart2 from 'lucide-svelte/icons/bar-chart-2';
+	import DollarSign from 'lucide-svelte/icons/dollar-sign';
 	// import { Star, TrendingUp, BarChart2, DollarSign } from 'lucide-svelte';
 	import Star from 'lucide-svelte/icons/star';
 	import TrendingUp from 'lucide-svelte/icons/trending-up';
-	import BarChart2 from 'lucide-svelte/icons/bar-chart-2';
-	import DollarSign from 'lucide-svelte/icons/dollar-sign';
+	import { onMount } from 'svelte';
+
+	import { Button } from '$lib/components/ui/button';
+	import { Card, CardContent } from '$lib/components/ui/card';
 	import * as Carousel from '$lib/components/ui/carousel/index.js';
+	import { Input } from '$lib/components/ui/input';
 
 	let timeLeft = {
 		days: 21,

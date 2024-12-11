@@ -1,13 +1,14 @@
 <script lang="ts">
-	import * as Form from '$lib/components/ui/form';
-	import * as Card from '$lib/components/ui/card';
-	import { RadioGroup, RadioGroupItem } from '$lib/components/ui/radio-group';
-	import { Badge } from '$lib/components/ui/badge';
-	import { toast } from 'svelte-sonner';
+	import type { FsSuperForm } from 'formsnap';
 	import type { Infer, SuperValidated } from 'sveltekit-superforms/client';
+	import { toast } from 'svelte-sonner';
+
 	import type { ResponseSchema } from '../schema';
 	import type { Question } from '$lib/models/data-model';
-	import type { FsSuperForm } from 'formsnap';
+	import { Badge } from '$lib/components/ui/badge';
+	import * as Card from '$lib/components/ui/card';
+	import * as Form from '$lib/components/ui/form';
+	import { RadioGroup, RadioGroupItem } from '$lib/components/ui/radio-group';
 
 	let { question, form, categoryId } = $props<{
 		question: Question;

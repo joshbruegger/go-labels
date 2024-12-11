@@ -1,6 +1,7 @@
-import { SESSION_COOKIE, createSessionClient } from '$lib/server/appwrite';
-import { redirect } from '@sveltejs/kit';
 import type { Models } from 'node-appwrite';
+import { redirect } from '@sveltejs/kit';
+
+import { createSessionClient, SESSION_COOKIE } from '$lib/server/appwrite';
 
 export async function load({ locals }) {
 	return {

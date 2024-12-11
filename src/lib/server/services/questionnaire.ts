@@ -1,5 +1,7 @@
-import type { CategorizedQuestions, Category, Question, Choice } from '$lib/models/data-model';
-import { Query, type Databases } from 'node-appwrite';
+import type { Databases } from 'node-appwrite';
+import { Query } from 'node-appwrite';
+
+import type { CategorizedQuestions, Category, Choice, Question } from '$lib/models/data-model';
 
 export async function fetchQuestionnaire(databases: Databases) {
 	const categories = await databases.listDocuments('questionnaire', 'categories', [

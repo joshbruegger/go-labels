@@ -1,7 +1,7 @@
 <script lang="ts">
+	import type { Category, Question } from '$lib/models/data-model';
 	import * as Card from '$lib/components/ui/card';
 	import DraggableQuestions from './DraggableQuestions.svelte';
-	import type { Category, Question } from '$lib/models/data-model';
 
 	type Props = {
 		questionnaire: Category[];

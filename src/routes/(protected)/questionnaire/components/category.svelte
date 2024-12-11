@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { Card, CardContent, CardHeader } from '$lib/components/ui/card';
-	import type { CategorizedQuestions } from '$lib/models/data-model';
 	import type { FsSuperForm } from 'formsnap';
-	import type { ResponseSchema } from '../schema';
-	import QuestionnaireQuestion from './question.svelte';
 	import type { Infer, SuperForm, SuperValidated } from 'sveltekit-superforms/client';
+
+	import type { ResponseSchema } from '../schema';
+	import type { CategorizedQuestions } from '$lib/models/data-model';
+	import { Card, CardContent, CardHeader } from '$lib/components/ui/card';
+	import QuestionnaireQuestion from './question.svelte';
 
 	let {
 		category,
