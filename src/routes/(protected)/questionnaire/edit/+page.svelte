@@ -6,15 +6,8 @@
 	import * as Card from '$lib/components/ui/card';
 	import { Skeleton } from '$lib/components/ui/skeleton';
 	import DraggableQuestions from './DraggableQuestions.svelte';
-	import EditableQuestionnaire from './EditableQuestionnaire.svelte';
 
 	let { data } = $props();
-	// let categories = $state(data.categories);
-	// $effect(() => {
-	// 	categories = data.categories;
-	// });
-
-	let categories: Category[];
 </script>
 
 {#await data.categories}
@@ -31,7 +24,23 @@
 		{/each}
 	</div>
 {:then categories}
-	<EditableQuestionnaire questionnaire={categories} />
+	<div class="space-y-4">
+		{#each categories as category}
+			<Card.Root class="mb-6 p-4">
+				<Card.Header>
+					<Card.Title>
+						{category.ordering}. {category.name}
+					</Card.Title>
+				</Card.Header>
+				<Card.Content>
+					<DraggableQuestions
+						categoryIdx={categories.indexOf(category)}
+						questions={category.questions}
+					/>
+				</Card.Content>
+			</Card.Root>
+		{/each}
+	</div>
 {:catch error}
 	<Alert.Root variant="destructive">
 		<CircleAlert class="size-4" />

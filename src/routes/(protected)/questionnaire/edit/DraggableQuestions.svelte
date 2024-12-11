@@ -1,12 +1,7 @@
 <script lang="ts">
 	import type { DndEvent, Item } from 'svelte-dnd-action';
 	import GripHorizontal from 'lucide-svelte/icons/grip-horizontal';
-	import {
-		dndzone,
-		dragHandle,
-		dragHandleZone,
-		overrideItemIdKeyNameBeforeInitialisingDndZones
-	} from 'svelte-dnd-action';
+	import { dndzone, dragHandle, dragHandleZone } from 'svelte-dnd-action';
 	import { flip } from 'svelte/animate';
 
 	import type { Question } from '$lib/models/data-model';
@@ -14,36 +9,38 @@
 	import * as Card from '$lib/components/ui/card';
 
 	type Props = {
-		categoryIdx: number;
 		questions: Question[];
-		fnUpdate: (categoryIdx: number, questions: Question[]) => void;
+		categoryIdx: number;
 	};
-	let { categoryIdx, questions = $bindable(), fnUpdate }: Props = $props();
+	let { categoryIdx, questions }: Props = $props();
 
 	// make reactive and update the state on page loads
 	let questionsReactive = $state(questions);
-	$effect(() => {
-		questionsReactive = questions;
-	});
+	// $effect(() => {
+	// 	questionsReactive = questions;
+	// });
 
 	const flipDurationMs = 300;
 
 	function handleDndConsider(e: CustomEvent<DndEvent<Question>>) {
 		questionsReactive = e.detail.items;
-		fnUpdate(categoryIdx, questions);
 	}
 	function handleDndFinalize(e: CustomEvent<DndEvent<Question>>) {
-		// console.log('old questions: ', questions);
-		// console.log('new questions: ', e.detail.items);
+		// reorder the questions
+		e.detail.items.forEach((item, idx) => {
+			item.ordering = idx + 1;
+		});
 		questionsReactive = e.detail.items;
-		fnUpdate(categoryIdx, questions);
 	}
 
 	let is_editing = false;
 </script>
 
 <div
-	use:dragHandleZone={{ items: questionsReactive, flipDurationMs: flipDurationMs }}
+	use:dragHandleZone={{
+		items: questionsReactive,
+		flipDurationMs: flipDurationMs
+	}}
 	onconsider={handleDndConsider}
 	onfinalize={handleDndFinalize}
 >
@@ -55,7 +52,7 @@
 						<GripHorizontal />
 					</div>
 					<Card.Title>
-						{question.ordering}
+						{categoryIdx}.{question.ordering}
 						<!-- <Input type="email" value={question.text} class="max-w-xs" /> -->
 						{question.text}
 					</Card.Title>

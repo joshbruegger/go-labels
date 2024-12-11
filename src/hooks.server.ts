@@ -10,7 +10,7 @@ export async function handle({ event, resolve }) {
 		event.locals.user = await account.get();
 		event.locals.userdb = databases;
 		event.locals.admindb = await createAdminClient().databases;
-	} catch (error) {
+	} catch {
 		// console.error("Error creating session client:", error);
 	}
 
