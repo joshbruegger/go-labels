@@ -12,7 +12,7 @@ export interface Category extends Models.Document {
 export interface Question extends Models.Document {
 	category_id: string;
 	text: string;
-	ordering: number;
+	ordering: string | null;
 	type: 'single' | 'multiple-choice';
 	requires_evidence: boolean;
 	description?: string;
