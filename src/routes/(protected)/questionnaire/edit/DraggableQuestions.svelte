@@ -112,7 +112,7 @@
 						<GripHorizontal />
 					</div>
 					<Card.Title>
-						{categoryIdx}.{question.ordering}
+						{categoryIdx}.{questionsReactive.indexOf(question) + 1}
 						<!-- <Input type="email" value={question.text} class="max-w-xs" /> -->
 						{question.text}
 					</Card.Title>
