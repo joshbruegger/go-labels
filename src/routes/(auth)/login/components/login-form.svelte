@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { ActionResult } from '@sveltejs/kit';
+	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 
 	import { applyAction, enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import * as Alert from '$lib/components/ui/alert';
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
-	import { Icons } from '$lib/components/ui/icons/index';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 
@@ -82,7 +82,7 @@
 				{/if}
 				<Button type="submit" disabled={isLoading}>
 					{#if isLoading}
-						<Icons.spinner class="mr-2 h-4 w-4 animate-spin" />
+						<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
 					{/if}
 					Log In
 				</Button>

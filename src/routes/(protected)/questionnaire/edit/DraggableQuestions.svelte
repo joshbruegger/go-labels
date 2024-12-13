@@ -1,14 +1,12 @@
 <script lang="ts">
-	import type { DndEvent, Item } from 'svelte-dnd-action';
+	import type { DndEvent } from 'svelte-dnd-action';
 	import { generateKeyBetween } from 'fractional-indexing';
 	import GripHorizontal from 'lucide-svelte/icons/grip-horizontal';
-	import { Client, Databases } from 'node-appwrite';
-	import { dndzone, dragHandle, dragHandleZone } from 'svelte-dnd-action';
+	import { dragHandle, dragHandleZone } from 'svelte-dnd-action';
 	import { toast } from 'svelte-sonner';
 	import { flip } from 'svelte/animate';
 
 	import type { Question } from '$lib/models/data-model';
-	import { PUBLIC_APPWRITE_ENDPOINT, PUBLIC_APPWRITE_PROJECT } from '$env/static/public';
 	import { Badge } from '$lib/components/ui/badge';
 	import * as Card from '$lib/components/ui/card';
 
@@ -92,8 +90,6 @@
 		// clear the original questions
 		originalQuestions = null;
 	}
-
-	let is_editing = false;
 </script>
 
 <div
