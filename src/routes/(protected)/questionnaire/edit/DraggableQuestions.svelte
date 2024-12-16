@@ -32,16 +32,7 @@
 		questions.forEach(async (q, i) => {
 			q.ordering = generateKeyBetween(before, null);
 			before = q.ordering;
-			await fetch('/api/questions/edit', {
-				method: 'POST',
-				body: JSON.stringify({
-					id: q.$id,
-					data: { ordering: q.ordering }
-				}),
-				headers: {
-					'content-type': 'application/json'
-				}
-			});
+			await postQuestionUpdate(q.$id, { ordering: q.ordering });
 		});
 	}
 
@@ -63,16 +54,7 @@
 		const newOrdering = generateKeyBetween(previous, next);
 
 		try {
-			const response = await fetch('/api/questions/edit', {
-				method: 'POST',
-				body: JSON.stringify({
-					id: e.detail.info.id,
-					data: { ordering: newOrdering }
-				}),
-				headers: {
-					'content-type': 'application/json'
-				}
-			});
+			const response = await postQuestionUpdate(e.detail.info.id, { ordering: newOrdering });
 			// if the response is not ok, throw an error
 			if (!response.ok) throw new Error('Failed to reorder questions');
 
@@ -89,6 +71,19 @@
 
 		// clear the original questions
 		originalQuestions = null;
+	}
+
+	async function postQuestionUpdate(questionId: string, newData: Partial<Question>) {
+		return await fetch('/api/questions/edit', {
+			method: 'POST',
+			body: JSON.stringify({
+				id: questionId,
+				data: newData
+			}),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
 	}
 </script>
 
