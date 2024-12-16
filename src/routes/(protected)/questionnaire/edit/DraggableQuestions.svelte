@@ -23,15 +23,19 @@
 
 	const flipDurationMs = 300;
 
-	function handleQuestionTextChange(question: Question, originalText: string) {
-		console.log('question text changed:', question.text);
+	async function handleQuestionTextChange(question: Question, newValue: string) {
+		const originalText = question.text; // save for rollback
+		question.text = newValue; // optimistic UI update
 		try {
-			postQuestionUpdate(question.$id, { text: question.text });
+			await postQuestionUpdate(question.$id, { text: question.text });
 		} catch {
 			toast.error('Error updating question text', {
 				description: 'Failed to update question text. Please try again.'
 			});
 			// rollback to original state if there's an error
+			question.text = originalText;
+		} finally {
+			return question.text;
 		}
 	}
 
@@ -72,14 +76,11 @@
 		let previous = newIndex === 0 ? null : questionsReactive[newIndex - 1].ordering;
 		let next =
 			newIndex === questionsReactive.length - 1 ? null : questionsReactive[newIndex + 1].ordering;
-		console.log('previous:', previous, ' | next:', next);
 		const newOrdering = generateKeyBetween(previous, next);
-		console.log('new order:', newOrdering);
 
 		try {
 			const response = await postQuestionUpdate(e.detail.info.id, { ordering: newOrdering });
 			// if the response is not ok, throw an error
-			if (!response.ok) throw new Error('Failed to reorder questions');
 
 			// update the ordering of the moved question
 			questionsReactive[newIndex].ordering = newOrdering;
@@ -88,7 +89,7 @@
 			questionsReactive = originalQuestions!;
 
 			toast.error('Error reordering questions', {
-				description: 'Failed to reorder questions. Changes have been rolled back.'
+				description: 'Failed to reorder questions. Please try again.'
 			});
 		}
 
@@ -97,7 +98,7 @@
 	}
 
 	async function postQuestionUpdate(questionId: string, newData: Partial<Question>) {
-		return await fetch('/api/questions/edit', {
+		const response = await fetch('/api/questions/edit', {
 			method: 'POST',
 			body: JSON.stringify({
 				id: questionId,
@@ -107,6 +108,8 @@
 				'content-type': 'application/json'
 			}
 		});
+		if (!response.ok) throw new Error('Failed to update question: ' + response.statusText);
+		return response;
 	}
 </script>
 
@@ -135,7 +138,7 @@
 						<br />
 						<InlineEdit
 							bind:value={question.text}
-							onValueChange={(original) => handleQuestionTextChange(question, original)}
+							onValueChange={async (newValue) => await handleQuestionTextChange(question, newValue)}
 						/>
 					</Card.Title>
 					<Card.Description>

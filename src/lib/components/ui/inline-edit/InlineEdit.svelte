@@ -1,51 +1,49 @@
 <script lang="ts">
 	import { tick } from 'svelte';
+	import { on } from 'svelte/events';
 
 	type Props = {
 		value: string;
 		required?: boolean;
-		onValueChange?: (original: string) => void;
+		onValueChange: (newValue: string) => Promise<string>;
 	};
 	let { value = $bindable(), required = true, onValueChange }: Props = $props();
 
 	let editing = $state(false);
-	let original = value;
+
+	let text = $state(value);
 
 	let inputRef = $state<HTMLInputElement>();
 
 	async function edit() {
 		editing = true;
-		// wait for the next tick to focus the input
 		await tick();
 		inputRef?.focus();
-		// check this https://stackoverflow.com/questions/57257499/how-to-focus-on-newly-added-inputs-in-svelte
 	}
 
-	function keydown(e: KeyboardEvent) {
-		if (e.key === 'Enter') {
-			editing = false;
-			if (value != original) {
-				onValueChange?.(value);
-				original = value;
-			}
+	async function onChange() {
+		editing = false;
+		if (text != value) {
+			text = await onValueChange(text);
 		}
 	}
 </script>
 
 {#if editing}
 	<input
-		bind:value
+		bind:value={text}
 		bind:this={inputRef}
-		onfocus={(e) => e.currentTarget.click()}
-		onblur={() => (editing = false)}
+		onblur={onChange}
 		{required}
 		class="m-0 w-full bg-transparent p-1 leading-normal outline-none focus:ring-0"
-		onkeydown={keydown}
+		onkeydown={(e) => {
+			if (e.key === 'Enter') onChange();
+		}}
 	/>
 {:else}
 	<div
 		role="button"
-		onkeypress={edit}
+		onkeydown={edit}
 		tabindex="0"
 		onclick={edit}
 		class=" w-full p-1 leading-normal"

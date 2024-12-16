@@ -13,7 +13,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	const { id, data } = await request.json();
 
 	try {
-		console.log('Editing question', id, data);
+		// console.log('Editing question', id, data);
 		const result = await locals.userdb!.updateDocument(
 			'questionnaire', // databaseId
 			'questions', // collectionId
