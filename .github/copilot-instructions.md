@@ -1,6 +1,6 @@
 We use bun for managing our dependencies and to build and deploy our project.
 
-Our project is developed using SvelteKit. We use Svelte 5, so do not use legacy Svelte 4 syntax.
+Our project is developed using SvelteKit. We use Svelte 5, so do not use legacy Svelte 4 syntax. This includes using runes like `$state()` instead of `export let`.
 
 We use the `svelte-adapter-bun` adapter to use bun as a server.
 
