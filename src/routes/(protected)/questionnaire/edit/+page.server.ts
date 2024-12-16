@@ -36,17 +36,24 @@ async function fetchQuestionnaire(adminDB: Databases) {
 					Query.orderAsc('ordering')
 				])
 				.then((result) =>
-					result.documents.map((doc) => ({
-						...doc,
-						category_id: doc.category_id,
-						text: doc.text,
-						ordering: doc.ordering,
-						type: doc.type,
-						requires_evidence: doc.requires_evidence,
-						description: doc.description,
-						explanation: doc.explanation,
-						choices: []
-					}))
+					result.documents
+						.map((doc) => ({
+							...doc,
+							category_id: doc.category_id,
+							text: doc.text,
+							ordering: doc.ordering as string,
+							type: doc.type,
+							requires_evidence: doc.requires_evidence,
+							description: doc.description,
+							explanation: doc.explanation,
+							choices: []
+						}))
+						.sort((a, b) => {
+							// Lexicographically sort ordering strings for fractional indexing ordering
+							if (a.ordering < b.ordering) return -1;
+							if (a.ordering > b.ordering) return 1;
+							return 0;
+						})
 				);
 
 			// Use Promise.all to wait for all choices to be fetched

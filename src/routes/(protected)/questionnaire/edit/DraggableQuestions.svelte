@@ -29,6 +29,13 @@
 
 	async function resetOrderingIndexes(questions: Question[]) {
 		let before: string | null = null;
+
+		// first replace with index ordering
+		questions.forEach(async (q, i) => {
+			await postQuestionUpdate(q.$id, { ordering: i.toString() });
+		});
+
+		// then reset the fractional ordering
 		questions.forEach(async (q, i) => {
 			q.ordering = generateKeyBetween(before, null);
 			before = q.ordering;
@@ -37,6 +44,8 @@
 	}
 
 	async function handleDndFinalize(e: CustomEvent<DndEvent<Question>>): Promise<void> {
+		// resetOrderingIndexes(questionsReactive);
+		// return;
 		// Optimistic UI update
 		questionsReactive = e.detail.items;
 
@@ -52,6 +61,7 @@
 			newIndex === questionsReactive.length - 1 ? null : questionsReactive[newIndex + 1].ordering;
 		console.log('previous:', previous, ' | next:', next);
 		const newOrdering = generateKeyBetween(previous, next);
+		console.log('new order:', newOrdering);
 
 		try {
 			const response = await postQuestionUpdate(e.detail.info.id, { ordering: newOrdering });
