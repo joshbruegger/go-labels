@@ -183,23 +183,25 @@
 				</Card.Header>
 				<Card.Content>
 					<ul class="list-disc pl-4 pt-2">
-						{#each question.choices as choice}
-							<li class="flex pb-1 pt-1">
-								<Badge variant="outline" class="mr-3 w-16 text-center">
+						{#if question.choices}
+							{#each question.choices as choice}
+								<li class="flex pb-1 pt-1">
+									<Badge variant="outline" class="mr-3 w-16 text-center">
+										<InlineEdit
+											value={choice.points.toString()}
+											class="w-full"
+											onChangeCallback={async (newValue) =>
+												await handleChoicePointsChange(choice, newValue)}
+										/>
+									</Badge>
 									<InlineEdit
-										value={choice.points.toString()}
-										class="w-full"
+										value={choice.text}
 										onChangeCallback={async (newValue) =>
-											await handleChoicePointsChange(choice, newValue)}
+											await handleChoiceTextChange(choice, newValue)}
 									/>
-								</Badge>
-								<InlineEdit
-									value={choice.text}
-									onChangeCallback={async (newValue) =>
-										await handleChoiceTextChange(choice, newValue)}
-								/>
-							</li>
-						{/each}
+								</li>
+							{/each}
+						{/if}
 					</ul>
 				</Card.Content>
 				<Card.Footer>
