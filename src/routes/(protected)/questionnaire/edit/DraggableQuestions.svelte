@@ -5,11 +5,12 @@
 	import { dragHandle, dragHandleZone } from 'svelte-dnd-action';
 	import { toast } from 'svelte-sonner';
 	import { flip } from 'svelte/animate';
+	import { number } from 'zod';
 
-	import type { Question } from '$lib/models/data-model';
+	import type { Choice, Question } from '$lib/models/data-model';
 	import { Badge } from '$lib/components/ui/badge';
 	import * as Card from '$lib/components/ui/card';
-	import InlineEdit from '$lib/components/ui/inline-edit/InlineEdit.svelte';
+	import InlineEdit from '$lib/components/ui/inline-edit/inline-edit.svelte';
 
 	type Props = {
 		questions: Question[];
@@ -23,14 +24,63 @@
 
 	const flipDurationMs = 300;
 
+	async function handleChoiceTextChange(choice: Choice, newValue: string) {
+		const originalText = choice.text; // save for rollback
+		choice.text = newValue; // optimistic UI update
+		try {
+			await postUpdate('choices', choice.$id, { text: choice.text });
+		} catch (e) {
+			toast.error('Error updating choice!', {
+				description: e instanceof Error ? e.message : 'Please try again.'
+			});
+			// rollback to original state if there's an error
+			choice.text = originalText;
+		} finally {
+			return choice.text;
+		}
+	}
+
+	async function handleChoicePointsChange(choice: Choice, newValue: string) {
+		// try to parse newvalue
+
+		const originalPoints = choice.points; // save for rollback
+		try {
+			choice.points = parseInt(newValue); // optimistic UI update
+			await postUpdate('choices', choice.$id, { points: choice.points });
+		} catch (e) {
+			toast.error('Error updating choice!', {
+				description: e instanceof Error ? e.message : 'Please try again.'
+			});
+			// rollback to original state if there's an error
+			choice.points = originalPoints;
+		} finally {
+			return choice.points;
+		}
+	}
+
+	async function postUpdate(endpoint: string, id: string, newData: Partial<Choice>) {
+		const response = await fetch('/api/' + endpoint + '/edit', {
+			method: 'POST',
+			body: JSON.stringify({
+				id: id,
+				data: newData
+			}),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+		if (!response.ok) throw new Error(response.statusText);
+		return response;
+	}
+
 	async function handleQuestionTextChange(question: Question, newValue: string) {
 		const originalText = question.text; // save for rollback
 		question.text = newValue; // optimistic UI update
 		try {
-			await postQuestionUpdate(question.$id, { text: question.text });
-		} catch {
-			toast.error('Error updating question text', {
-				description: 'Failed to update question text. Please try again.'
+			await postUpdate('questions', question.$id, { text: question.text });
+		} catch (e) {
+			toast.error('Error updating question!', {
+				description: e instanceof Error ? e.message : 'Please try again.'
 			});
 			// rollback to original state if there's an error
 			question.text = originalText;
@@ -49,14 +99,14 @@
 
 		// first replace with index ordering
 		questions.forEach(async (q, i) => {
-			await postQuestionUpdate(q.$id, { ordering: i.toString() });
+			await postUpdate('questions', q.$id, { ordering: i.toString() });
 		});
 
 		// then reset the fractional ordering
 		questions.forEach(async (q, i) => {
 			q.ordering = generateKeyBetween(before, null);
 			before = q.ordering;
-			await postQuestionUpdate(q.$id, { ordering: q.ordering });
+			await postUpdate('questions', q.$id, { ordering: q.ordering });
 		});
 	}
 
@@ -79,7 +129,7 @@
 		const newOrdering = generateKeyBetween(previous, next);
 
 		try {
-			const response = await postQuestionUpdate(e.detail.info.id, { ordering: newOrdering });
+			const response = await postUpdate('questions', e.detail.info.id, { ordering: newOrdering });
 			// if the response is not ok, throw an error
 
 			// update the ordering of the moved question
@@ -95,21 +145,6 @@
 
 		// clear the original questions
 		originalQuestions = null;
-	}
-
-	async function postQuestionUpdate(questionId: string, newData: Partial<Question>) {
-		const response = await fetch('/api/questions/edit', {
-			method: 'POST',
-			body: JSON.stringify({
-				id: questionId,
-				data: newData
-			}),
-			headers: {
-				'content-type': 'application/json'
-			}
-		});
-		if (!response.ok) throw new Error('Failed to update question: ' + response.statusText);
-		return response;
 	}
 </script>
 
@@ -137,8 +172,9 @@
 						{categoryIdx}.{questionsReactive.indexOf(question) + 1} ({question.ordering})
 						<br />
 						<InlineEdit
-							bind:value={question.text}
-							onValueChange={async (newValue) => await handleQuestionTextChange(question, newValue)}
+							value={question.text}
+							onChangeCallback={async (newValue) =>
+								await handleQuestionTextChange(question, newValue)}
 						/>
 					</Card.Title>
 					<Card.Description>
@@ -148,9 +184,20 @@
 				<Card.Content>
 					<ul class="list-disc pl-4 pt-2">
 						{#each question.choices as choice}
-							<li>
-								{choice.text}
-								<Badge variant="outline">{choice.points}</Badge>
+							<li class="flex pb-1 pt-1">
+								<Badge variant="outline" class="mr-3 w-16 text-center">
+									<InlineEdit
+										value={choice.points.toString()}
+										class="w-full"
+										onChangeCallback={async (newValue) =>
+											await handleChoicePointsChange(choice, newValue)}
+									/>
+								</Badge>
+								<InlineEdit
+									value={choice.text}
+									onChangeCallback={async (newValue) =>
+										await handleChoiceTextChange(choice, newValue)}
+								/>
 							</li>
 						{/each}
 					</ul>

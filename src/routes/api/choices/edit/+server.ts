@@ -3,9 +3,9 @@ import { error, json } from '@sveltejs/kit';
 import { AppwriteException } from 'node-appwrite';
 
 /**
- * Edits a question
- * @param id: The id of the question to edit
- * @param data: The new data for the question
+ * Edits a choice
+ * @param id: The id of the choice to edit
+ * @param data: The new data for the choice
  */
 export const POST: RequestHandler = async ({ request, locals }) => {
 	if (!locals.user) {
@@ -14,10 +14,9 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	const { id, data } = await request.json();
 
 	try {
-		// console.log('Editing question', id, data);
 		const result = await locals.userdb!.updateDocument(
 			'questionnaire', // databaseId
-			'questions', // collectionId
+			'choices', // collectionId
 			id, // documentId
 			data // data (optional)
 			// ["read("any")"] // permissions (optional)
