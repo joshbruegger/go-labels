@@ -99,7 +99,12 @@
 		<div animate:flip={{ duration: flipDurationMs }}>
 			<Card.Root>
 				<Card.Header>
-					<div use:dragHandle aria-label="drag-handle for question {question.ordering}">
+					<div
+						use:dragHandle
+						aria-label="drag-handle for question {categoryIdx}.{questionsReactive.indexOf(
+							question
+						) + 1}"
+					>
 						<GripHorizontal />
 					</div>
 					<Card.Title>
