@@ -9,6 +9,7 @@
 	import type { Question } from '$lib/models/data-model';
 	import { Badge } from '$lib/components/ui/badge';
 	import * as Card from '$lib/components/ui/card';
+	import InlineEdit from '$lib/components/ui/inline-edit/InlineEdit.svelte';
 
 	type Props = {
 		questions: Question[];
@@ -21,6 +22,18 @@
 	let questionsReactive = $state(questions);
 
 	const flipDurationMs = 300;
+
+	function handleQuestionTextChange(question: Question, originalText: string) {
+		console.log('question text changed:', question.text);
+		try {
+			postQuestionUpdate(question.$id, { text: question.text });
+		} catch {
+			toast.error('Error updating question text', {
+				description: 'Failed to update question text. Please try again.'
+			});
+			// rollback to original state if there's an error
+		}
+	}
 
 	function handleDndConsider(e: CustomEvent<DndEvent<Question>>) {
 		if (!originalQuestions) originalQuestions = [...questionsReactive];
@@ -118,9 +131,12 @@
 						<GripHorizontal />
 					</div>
 					<Card.Title>
-						{categoryIdx}.{questionsReactive.indexOf(question) + 1}
-						<!-- <Input type="email" value={question.text} class="max-w-xs" /> -->
-						{question.text}
+						{categoryIdx}.{questionsReactive.indexOf(question) + 1} ({question.ordering})
+						<br />
+						<InlineEdit
+							bind:value={question.text}
+							onValueChange={(original) => handleQuestionTextChange(question, original)}
+						/>
 					</Card.Title>
 					<Card.Description>
 						{question.description}
