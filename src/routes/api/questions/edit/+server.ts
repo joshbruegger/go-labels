@@ -25,6 +25,6 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		return json(result);
 	} catch (err) {
 		console.error(err);
-		error(500, 'Internal server error');
+		error(500, err instanceof Error ? err.message : 'Internal server error');
 	}
 };
