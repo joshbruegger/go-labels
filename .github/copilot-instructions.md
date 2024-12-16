@@ -1,11 +1,33 @@
-We use bun for managing our dependencies and to build and deploy our project.
+# Instructions for AI
 
-Our project is developed using SvelteKit. We use Svelte 5, so do not use legacy Svelte 4 syntax. This includes using runes like `$state()` instead of `export let`.
+## Core Project Details
 
-We use the `svelte-adapter-bun` adapter to use bun as a server.
+- **Name**: Green Office Labels
+- **Purpose**: Sustainability assessment system for University of Groningen student organizations
+- **Users**: Green Office staff (administrators) and student organizations (respondents)
+- **Main Features**: Questionnaire management, manual and automatic response verification, reporting, submission handling
 
-Our fronted uses `shadcn-svelte@next` (a svelte port of shadcn/ui) for the UI components. Components are saved in the `$lib/components/ui/` directory. We use the command `bun x shadcn-svelte@next add` to add components.
+## Technical Stack
 
-Our backend is Appwrite. We use the `node-appwrite` package to interact with Appwrite.
+- **Package Manager and Deployment Server**: `bun` for all operations
+- **Full-Stack Framework**: SvelteKit + Svelte 5 (SSR architecture)
+- **UI Framework**: `shadcn-svelte@next` (Svelte port of shadcn/ui)
+  - Usage: `bun x shadcn-svelte@next add <component-name>`
+  - Components location: `$lib/components/ui/`
+- **Auth + Database**: Appwrite using `node-appwrite` SDK
 
-Follow best practicss, DRY principles and include thorough comments.
+## Documentation
+
+- Svelte/SvelteKit: [`svelte-llms-small.txt`](../svelte-llms-small.txt)
+- Database structure: [`appwrite.json`](../appwrite.json)
+
+## Code Standards
+
+1. Use DRY principles
+2. Write clear comments
+3. Follow best practices
+4. Keep code clean/maintainable
+
+# Other Instructions
+
+1. Do not comment on invalid Svelte syntax unless you have read the Svelte/SvelteKit documentation.

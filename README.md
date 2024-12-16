@@ -1,38 +1,38 @@
-# sv
+# Green Office Labels Website
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A web-based sustainability assessment system for University of Groningen student organizations, built with SvelteKit.
 
-## Creating a project
+## About
 
-If you're seeing this, you've probably already done this step. Congrats!
+The Green Office Labels is a programme enabling student organizations at the University of Groningen to assess and improve their sustainability practices. Organizations complete questionnaires and receive sustainability certifications based on their responses.
 
-```bash
-# create a new project in the current directory
-npx sv create
+## Features
 
-# create a new project in my-app
-npx sv create my-app
-```
+- 📝 Questionnaire management system
+- ✅ Automatic and manual response verification
+- 📊 Reporting and analytics
+- 🔐 Secure authentication system
+- 📱 Responsive design
 
-## Developing
+## Tech Stack
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+- **Framework**: SvelteKit
+- **UI Components**: shadcn-svelte
+- **Authentication/Database**: Appwrite
+- **Package Manager**: bun
+- **Styling**: TailwindCSS
 
-```bash
-npm run dev
+## Development
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
+1. Clone the repository
+2. Install dependencies:
 
 ```bash
-npm run build
+bun install
 ```
 
-You can preview the production build with `npm run preview`.
+3. Start development server:
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+```bash
+bun --bun run dev
+```
