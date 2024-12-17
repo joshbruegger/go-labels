@@ -155,61 +155,61 @@
 	}}
 	onconsider={handleDndConsider}
 	onfinalize={handleDndFinalize}
+	class="space-y-3"
 >
-	{#each questionsReactive as question (question.$id)}
-		<div animate:flip={{ duration: flipDurationMs }}>
-			<Card.Root>
-				<Card.Header>
-					<div
-						use:dragHandle
-						aria-label="drag-handle for question {categoryIdx}.{questionsReactive.indexOf(
-							question
-						) + 1}"
-					>
-						<GripHorizontal />
+	{#each questionsReactive as question, i (question.$id)}
+		<div
+			animate:flip={{ duration: flipDurationMs }}
+			class="group relative rounded-lg border bg-card text-card-foreground transition-all hover:shadow-sm"
+		>
+			<div class="flex items-start gap-3 p-4">
+				<div
+					use:dragHandle
+					class="mt-1 cursor-grab rounded p-1 hover:bg-muted active:cursor-grabbing"
+				>
+					<GripHorizontal class="size-5 text-muted-foreground" />
+				</div>
+
+				<div class="flex-1 space-y-4">
+					<div class="space-y-2">
+						<div class="flex items-center gap-2">
+							<Badge
+								variant="outline"
+								class="flex h-8 w-8 items-center justify-center rounded-full p-0"
+							>
+								{i + 1}
+							</Badge>
+							<InlineEdit
+								value={question.text}
+								onChangeCallback={(value) => handleQuestionTextChange(question, value)}
+								class="flex-1 text-lg font-medium"
+							/>
+						</div>
 					</div>
-					<Card.Title>
-						{categoryIdx}.{questionsReactive.indexOf(question) + 1} ({question.ordering})
-						<br />
-						<InlineEdit
-							value={question.text}
-							onChangeCallback={async (newValue) =>
-								await handleQuestionTextChange(question, newValue)}
-						/>
-					</Card.Title>
-					<Card.Description>
-						{question.description}
-					</Card.Description>
-				</Card.Header>
-				<Card.Content>
-					<ul class="list-disc pl-4 pt-2">
-						{#if question.choices}
-							{#each question.choices as choice}
-								<li class="flex pb-1 pt-1">
-									<Badge variant="outline" class="mr-3 w-16 text-center">
-										<InlineEdit
-											value={choice.points.toString()}
-											class="w-full"
-											onChangeCallback={async (newValue) =>
-												await handleChoicePointsChange(choice, newValue)}
-										/>
-									</Badge>
+
+					<div class="space-y-2">
+						<div class="grid gap-2">
+							{#each question.choices ?? [] as choice}
+								<div class="flex items-center gap-3 rounded-md border bg-card p-2">
 									<InlineEdit
 										value={choice.text}
-										onChangeCallback={async (newValue) =>
-											await handleChoiceTextChange(choice, newValue)}
+										onChangeCallback={(value) => handleChoiceTextChange(choice, value)}
+										class="flex-1"
 									/>
-								</li>
+									<div class="flex items-center gap-1">
+										<span class="text-sm text-muted-foreground">Points:</span>
+										<InlineEdit
+											value={choice.points.toString()}
+											onChangeCallback={(value) => handleChoicePointsChange(choice, value)}
+											class="w-12 text-center"
+										/>
+									</div>
+								</div>
 							{/each}
-						{/if}
-					</ul>
-				</Card.Content>
-				<Card.Footer>
-					{#if question.requires_evidence}
-						<Badge variant="destructive">Requires Evidence</Badge>
-					{/if}
-				</Card.Footer>
-			</Card.Root>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	{/each}
 </div>
