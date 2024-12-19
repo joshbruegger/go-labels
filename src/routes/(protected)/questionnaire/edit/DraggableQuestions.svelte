@@ -25,6 +25,11 @@
 	let originalQuestions: Question[] | null = $state(null);
 	let questionsReactive = $state(questions);
 
+	// Update questionsReactive when questions prop changes
+	$effect(() => {
+		questionsReactive = questions;
+	});
+
 	const flipDurationMs = 300;
 
 	async function handleChoiceTextChange(choice: Choice, newValue: string) {
