@@ -52,9 +52,15 @@
 		// try to parse newvalue
 
 		const originalPoints = choice.points; // save for rollback
+		const question = questionsReactive.find((q) => q.choices?.some((c) => c.$id === choice.$id));
 		try {
 			choice.points = parseInt(newValue); // optimistic UI update
 			await postUpdate('choices', choice.$id, { points: choice.points });
+
+			// Sort choices by points in descending order after successful update
+			if (question && question.choices) {
+				question.choices.sort((a, b) => b.points - a.points);
+			}
 		} catch (e) {
 			toast.error('Error updating choice!', {
 				description: e instanceof Error ? e.message : 'Please try again.'
@@ -249,7 +255,7 @@
 
 					<div class="space-y-2">
 						<div class="grid gap-2">
-							{#each question.choices ?? [] as choice}
+							{#each question.choices ?? [] as choice (choice.$id)}
 								<div class="flex items-center gap-3 rounded-md border bg-card p-2">
 									<InlineEdit
 										value={choice.text}
