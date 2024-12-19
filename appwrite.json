@@ -47,7 +47,13 @@
 	"collections": [
 		{
 			"$id": "questions",
-			"$permissions": ["read(\"any\")"],
+			"$permissions": [
+				"read(\"any\")",
+				"create(\"label:admin\")",
+				"read(\"label:admin\")",
+				"update(\"label:admin\")",
+				"delete(\"label:admin\")"
+			],
 			"databaseId": "questionnaire",
 			"name": "questions",
 			"enabled": true,
@@ -110,15 +116,6 @@
 					"default": null
 				},
 				{
-					"key": "ordering",
-					"type": "integer",
-					"required": true,
-					"array": false,
-					"min": 0,
-					"max": 9223372036854775807,
-					"default": null
-				},
-				{
 					"key": "description",
 					"type": "string",
 					"required": false,
@@ -140,6 +137,14 @@
 					"array": false,
 					"size": 255,
 					"default": null
+				},
+				{
+					"key": "ordering",
+					"type": "string",
+					"required": true,
+					"array": false,
+					"size": 30,
+					"default": null
 				}
 			],
 			"indexes": [
@@ -158,20 +163,6 @@
 					"orders": ["ASC"]
 				},
 				{
-					"key": "ordering",
-					"type": "key",
-					"status": "available",
-					"attributes": ["ordering"],
-					"orders": ["ASC"]
-				},
-				{
-					"key": "ordering_unique",
-					"type": "unique",
-					"status": "available",
-					"attributes": ["ordering", "category_id"],
-					"orders": ["ASC", "ASC"]
-				},
-				{
 					"key": "category",
 					"type": "key",
 					"status": "available",
@@ -184,6 +175,20 @@
 					"status": "available",
 					"attributes": ["type"],
 					"orders": ["ASC"]
+				},
+				{
+					"key": "ordering",
+					"type": "key",
+					"status": "available",
+					"attributes": ["ordering"],
+					"orders": ["ASC"]
+				},
+				{
+					"key": "unique_ordering_per_category",
+					"type": "unique",
+					"status": "available",
+					"attributes": ["category_id", "ordering"],
+					"orders": ["ASC", "ASC"]
 				}
 			]
 		},
@@ -381,7 +386,7 @@
 					"default": null
 				},
 				{
-					"key": "stage",
+					"key": "status",
 					"type": "string",
 					"required": true,
 					"array": false,
@@ -399,24 +404,30 @@
 					"orders": ["ASC"]
 				},
 				{
-					"key": "stage",
+					"key": "status",
 					"type": "key",
 					"status": "available",
-					"attributes": ["stage"],
+					"attributes": ["status"],
 					"orders": ["ASC"]
 				},
 				{
-					"key": "user_stage",
+					"key": "user_status",
 					"type": "key",
 					"status": "available",
-					"attributes": ["user_id", "stage"],
+					"attributes": ["user_id", "status"],
 					"orders": ["ASC", "ASC"]
 				}
 			]
 		},
 		{
 			"$id": "choices",
-			"$permissions": ["read(\"any\")"],
+			"$permissions": [
+				"read(\"any\")",
+				"create(\"label:admin\")",
+				"read(\"label:admin\")",
+				"update(\"label:admin\")",
+				"delete(\"label:admin\")"
+			],
 			"databaseId": "questionnaire",
 			"name": "choices",
 			"enabled": true,
