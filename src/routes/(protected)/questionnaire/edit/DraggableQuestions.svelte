@@ -2,6 +2,8 @@
 	import type { DndEvent } from 'svelte-dnd-action';
 	import { generateKeyBetween } from 'fractional-indexing';
 	import GripHorizontal from 'lucide-svelte/icons/grip-horizontal';
+	import Plus from 'lucide-svelte/icons/plus';
+	import X from 'lucide-svelte/icons/x';
 	import { dragHandle, dragHandleZone } from 'svelte-dnd-action';
 	import { toast } from 'svelte-sonner';
 	import { flip } from 'svelte/animate';
@@ -9,6 +11,7 @@
 
 	import type { Choice, Question } from '$lib/models/data-model';
 	import { Badge } from '$lib/components/ui/badge';
+	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
 	import InlineEdit from '$lib/components/ui/inline-edit/inline-edit.svelte';
 
@@ -146,6 +149,58 @@
 		// clear the original questions
 		originalQuestions = null;
 	}
+
+	async function handleAddChoice(question: Question) {
+		try {
+			const response = await fetch('/api/choices/create', {
+				method: 'POST',
+				body: JSON.stringify({
+					question_id: question.$id,
+					text: 'New Choice',
+					points: 0
+				}),
+				headers: {
+					'content-type': 'application/json'
+				}
+			});
+
+			if (!response.ok) throw new Error(response.statusText);
+
+			const newChoice = await response.json();
+			question.choices = [...(question.choices ?? []), newChoice];
+
+			toast.success('Choice added successfully');
+		} catch (e) {
+			toast.error('Error adding choice!', {
+				description: e instanceof Error ? e.message : 'Please try again.'
+			});
+		}
+	}
+
+	async function handleRemoveChoice(question: Question, choice: Choice) {
+		try {
+			const response = await fetch('/api/choices/delete', {
+				method: 'POST',
+				body: JSON.stringify({
+					id: choice.$id
+				}),
+				headers: {
+					'content-type': 'application/json'
+				}
+			});
+
+			if (!response.ok) throw new Error(response.statusText);
+
+			// Update UI optimistically
+			question.choices = question.choices?.filter((c) => c.$id !== choice.$id) ?? [];
+
+			toast.success('Choice removed successfully');
+		} catch (e) {
+			toast.error('Error removing choice!', {
+				description: e instanceof Error ? e.message : 'Please try again.'
+			});
+		}
+	}
 </script>
 
 <div
@@ -204,8 +259,20 @@
 											class="w-12 text-center"
 										/>
 									</div>
+									<Button
+										variant="ghost"
+										size="icon"
+										class="size-8"
+										onclick={() => handleRemoveChoice(question, choice)}
+									>
+										<X class="size-4" />
+									</Button>
 								</div>
 							{/each}
+							<Button variant="outline" class="w-full" onclick={() => handleAddChoice(question)}>
+								<Plus class="mr-2 size-4" />
+								Add Choice
+							</Button>
 						</div>
 					</div>
 				</div>
