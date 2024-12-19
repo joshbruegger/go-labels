@@ -2,8 +2,9 @@
 
 ### Backend Changes
 
-- If a change requires editing the Appwrite backend, commit the changes to `appwrite.json` as well
-  - You can use the Appwrite CLI: `appwrite pull all`
+- If a change requires editing the Appwrite backend, commit the changes to `appwrite.json` as well:
+  - generate the new `appwrite.json` using the Appwrite CLI: `appwrite pull all`
+  - re-generate the types for the database collectionsusing `bun run generate:types`
 
 ## Development Guidelines
 

@@ -1,37 +1,11 @@
-import type { Models } from 'node-appwrite';
+import type { $Categories, $Choices, $Questions } from './appwrite-types';
 
-// Define the Category interface
-export interface Category extends Models.Document {
-	name: string;
-	description?: string;
-	ordering: number;
+export interface Category extends $Categories {
 	questions: Question[];
 }
 
-// Define the Question interface
-export interface Question extends Models.Document {
-	category_id: string;
-	text: string;
-	ordering: string | null;
-	type: 'single' | 'multiple-choice';
-	requires_evidence: boolean;
-	description?: string;
-	explanation?: string;
+export interface Question extends $Questions {
 	choices: Choice[];
 }
 
-// Define the Choice interface
-export interface Choice extends Models.Document {
-	question_id: string;
-	text: string;
-	points: number;
-}
-
-// Organized interfaces for nested data structures
-export interface CategorizedQuestions extends Category {
-	questions: QuestionWithChoices[];
-}
-
-export interface QuestionWithChoices extends Question {
-	choices: Choice[];
-}
+export type Choice = $Choices;

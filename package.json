@@ -29,7 +29,8 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
-		"prepare": "husky"
+		"prepare": "husky",
+		"generate:types": "bun run ./src/lib/models/generate-appwrite-types.ts"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.4",
@@ -37,6 +38,7 @@
 		"@sveltejs/adapter-auto": "^3.3.1",
 		"@sveltejs/kit": "^2.12.1",
 		"@sveltejs/vite-plugin-svelte": "^4.0.3",
+		"@types/node": "^22.10.2",
 		"autoprefixer": "^10.4.20",
 		"bits-ui": "^1.0.0-next.72",
 		"clsx": "^2.1.1",
