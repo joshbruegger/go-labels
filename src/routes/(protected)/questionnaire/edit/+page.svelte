@@ -69,30 +69,12 @@
 				{#if selectedCategoryId}
 					{@const selectedCategory = categories.find((c) => c.$id === selectedCategoryId)}
 					{#if selectedCategory}
-						<Card.Root
-							class={cn(
-								'transition-all hover:shadow-md',
-								'border-l-4',
-								selectedCategory.ordering % 2 === 0 ? 'border-l-primary' : 'border-l-secondary'
-							)}
-						>
-							<Card.Header>
-								<Card.Title class="flex items-center gap-2 text-xl">
-									<span
-										class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-muted"
-									>
-										{selectedCategory.ordering}
-									</span>
-									<span>{selectedCategory.name}</span>
-								</Card.Title>
-							</Card.Header>
-							<Card.Content>
-								<DraggableQuestions
-									categoryIdx={categories.indexOf(selectedCategory)}
-									questions={selectedCategory.questions}
-								/>
-							</Card.Content>
-						</Card.Root>
+						<h1>{selectedCategory.ordering} {selectedCategory.name}</h1>
+
+						<DraggableQuestions
+							categoryIdx={categories.indexOf(selectedCategory)}
+							questions={selectedCategory.questions}
+						/>
 					{/if}
 				{:else}
 					<Alert.Root>
