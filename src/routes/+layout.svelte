@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ModeWatcher } from 'mode-watcher';
+	import { ModeWatcher, setMode } from 'mode-watcher';
 	import { overrideItemIdKeyNameBeforeInitialisingDndZones } from 'svelte-dnd-action';
 
 	import { Toaster } from '$lib/components/ui/sonner';
@@ -8,9 +8,11 @@
 
 	let { children } = $props();
 	overrideItemIdKeyNameBeforeInitialisingDndZones('$id');
+
+	setMode('light');
 </script>
 
 <Toaster />
-<ModeWatcher />
+<ModeWatcher defaultMode={'light'} track={false} />
 
 {@render children()}
