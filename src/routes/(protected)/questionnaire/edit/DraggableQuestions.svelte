@@ -14,6 +14,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
 	import InlineEdit from '$lib/components/ui/inline-edit/inline-edit.svelte';
+	import Input from '$lib/components/ui/input/input.svelte';
 
 	type Props = {
 		questions: Question[];
@@ -224,70 +225,77 @@
 	class="space-y-3"
 >
 	{#each questionsReactive as question, i (question.$id)}
-		<div
-			animate:flip={{ duration: flipDurationMs }}
-			class="group relative rounded-lg border bg-card text-card-foreground transition-all hover:shadow-sm"
-		>
-			<div class="flex items-start gap-3 p-4">
-				<div
-					use:dragHandle
-					class="mt-1 cursor-grab rounded p-1 hover:bg-muted active:cursor-grabbing"
-				>
-					<GripHorizontal class="size-5 text-muted-foreground" />
-				</div>
-
-				<div class="flex-1 space-y-4">
-					<div class="space-y-2">
-						<div class="flex items-center gap-2">
-							<Badge
-								variant="outline"
-								class="flex h-8 w-8 items-center justify-center rounded-full p-0"
-							>
-								{i + 1}
-							</Badge>
-							<InlineEdit
-								value={question.text}
-								onChangeCallback={(value) => handleQuestionTextChange(question, value)}
-								class="flex-1 text-lg font-medium"
-							/>
-						</div>
+		<div animate:flip={{ duration: flipDurationMs }}>
+			<Card.Root class="group relative">
+				<Card.Content class="flex items-start gap-3 p-4">
+					<div
+						use:dragHandle
+						class="mt-1 cursor-grab rounded p-1 hover:bg-muted active:cursor-grabbing"
+					>
+						<GripHorizontal class="size-5 text-muted-foreground" />
 					</div>
 
-					<div class="space-y-2">
-						<div class="grid gap-2">
-							{#each question.choices ?? [] as choice (choice.$id)}
-								<div class="flex items-center gap-3 rounded-md border bg-card p-2">
-									<InlineEdit
-										value={choice.text}
-										onChangeCallback={(value) => handleChoiceTextChange(choice, value)}
-										class="flex-1"
-									/>
-									<div class="flex items-center gap-1">
-										<span class="text-sm text-muted-foreground">Points:</span>
-										<InlineEdit
-											value={choice.points.toString()}
-											onChangeCallback={(value) => handleChoicePointsChange(choice, value)}
-											class="w-12 text-center"
-										/>
-									</div>
+					<div class="flex-1 space-y-4">
+						<div class="space-y-2">
+							<div class="flex items-center gap-2">
+								<Badge
+									variant="outline"
+									class="flex h-8 w-8 items-center justify-center rounded-full p-0"
+								>
+									{i + 1}
+								</Badge>
+								<InlineEdit
+									value={question.text}
+									onChangeCallback={(value) => handleQuestionTextChange(question, value)}
+									class="flex-1 text-lg font-medium"
+								/>
+							</div>
+						</div>
+
+						<div class="space-y-2">
+							<div class="grid gap-2">
+								{#if question.type === 'multiple-choice'}
+									{#each question.choices ?? [] as choice (choice.$id)}
+										<div class="flex items-center gap-3 rounded-md border bg-card p-2 shadow-sm">
+											<InlineEdit
+												value={choice.text}
+												onChangeCallback={(value) => handleChoiceTextChange(choice, value)}
+												class="flex-1"
+											/>
+											<div class="flex items-center gap-1">
+												<span class="text-sm text-muted-foreground">Points:</span>
+												<InlineEdit
+													value={choice.points.toString()}
+													onChangeCallback={(value) => handleChoicePointsChange(choice, value)}
+													class="w-12 text-center"
+												/>
+											</div>
+											<Button
+												variant="ghost"
+												size="icon"
+												class="size-8"
+												onclick={() => handleRemoveChoice(question, choice)}
+											>
+												<X class="size-4" />
+											</Button>
+										</div>
+									{/each}
 									<Button
-										variant="ghost"
-										size="icon"
-										class="size-8"
-										onclick={() => handleRemoveChoice(question, choice)}
+										variant="outline"
+										class="w-full"
+										onclick={() => handleAddChoice(question)}
 									>
-										<X class="size-4" />
+										<Plus class="mr-2 size-4" />
+										Add Choice
 									</Button>
-								</div>
-							{/each}
-							<Button variant="outline" class="w-full" onclick={() => handleAddChoice(question)}>
-								<Plus class="mr-2 size-4" />
-								Add Choice
-							</Button>
+								{:else if question.type === 'open'}
+									<Input value="Short answer text" disabled class="w-full" />
+								{/if}
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
+				</Card.Content>
+			</Card.Root>
 		</div>
 	{/each}
 </div>
