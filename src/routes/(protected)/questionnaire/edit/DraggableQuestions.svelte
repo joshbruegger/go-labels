@@ -238,63 +238,58 @@
 					<div class="flex-1 space-y-4">
 						<div class="space-y-2">
 							<div class="flex items-center gap-2">
-								<Badge
-									variant="outline"
-									class="flex h-8 w-8 items-center justify-center rounded-full p-0"
-								>
-									{i + 1}
-								</Badge>
+								{categoryIdx}.{i + 1}
 								<InlineEdit
 									value={question.text}
 									onChangeCallback={(value) => handleQuestionTextChange(question, value)}
-									class="flex-1 text-lg font-medium"
+									class=" "
 								/>
 							</div>
-						</div>
 
-						<div class="space-y-2">
-							<div class="grid gap-2">
-								{#if question.type === 'multiple-choice'}
-									{#each question.choices ?? [] as choice (choice.$id)}
-										<div class="flex items-center gap-3 rounded-md border bg-card p-2 shadow-sm">
-											<InlineEdit
-												value={choice.text}
-												onChangeCallback={(value) => handleChoiceTextChange(choice, value)}
-												class="flex-1"
-											/>
-											<div class="flex items-center gap-1">
-												<span class="text-sm text-muted-foreground">Points:</span>
+							<div class="space-y-2">
+								<div class="grid gap-2">
+									{#if question.type === 'multiple-choice'}
+										{#each question.choices ?? [] as choice (choice.$id)}
+											<div class="flex items-center gap-3 rounded-md border bg-card p-2 shadow-sm">
 												<InlineEdit
-													value={choice.points.toString()}
-													onChangeCallback={(value) => handleChoicePointsChange(choice, value)}
-													class="w-12 text-center"
+													value={choice.text}
+													onChangeCallback={(value) => handleChoiceTextChange(choice, value)}
+													class="flex-1"
 												/>
+												<div class="flex items-center gap-1">
+													<span class="text-sm text-muted-foreground">Points:</span>
+													<InlineEdit
+														value={choice.points.toString()}
+														onChangeCallback={(value) => handleChoicePointsChange(choice, value)}
+														class="w-12 text-center"
+													/>
+												</div>
+												<Button
+													variant="ghost"
+													size="icon"
+													class="size-8"
+													onclick={() => handleRemoveChoice(question, choice)}
+												>
+													<X class="size-4" />
+												</Button>
 											</div>
-											<Button
-												variant="ghost"
-												size="icon"
-												class="size-8"
-												onclick={() => handleRemoveChoice(question, choice)}
-											>
-												<X class="size-4" />
-											</Button>
-										</div>
-									{/each}
-									<Button
-										variant="outline"
-										class="w-full"
-										onclick={() => handleAddChoice(question)}
-									>
-										<Plus class="mr-2 size-4" />
-										Add Choice
-									</Button>
-								{:else if question.type === 'open'}
-									<Input value="Short answer text" disabled class="w-full" />
-								{/if}
+										{/each}
+										<Button
+											variant="outline"
+											class="w-full"
+											onclick={() => handleAddChoice(question)}
+										>
+											<Plus class="mr-2 size-4" />
+											Add Choice
+										</Button>
+									{:else if question.type === 'open'}
+										<Input value="Short answer text" disabled class="w-full" />
+									{/if}
+								</div>
 							</div>
 						</div>
-					</div>
-				</Card.Content>
+					</div></Card.Content
+				>
 			</Card.Root>
 		</div>
 	{/each}
