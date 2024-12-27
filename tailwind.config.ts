@@ -49,14 +49,14 @@ const config: Config = {
 					foreground: 'hsl(var(--card-foreground) / <alpha-value>)'
 				},
 				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
+					DEFAULT: 'hsl(var(--background))',
+					foreground: 'hsl(var(--foreground))',
+					primary: 'hsl(var(--primary))',
+					'primary-foreground': 'hsl(var(--primary-foreground))',
+					accent: 'hsl(var(--accent))',
+					'accent-foreground': 'hsl(var(--accent-foreground))',
+					border: 'hsl(var(--border))',
+					ring: 'hsl(var(--ring))'
 				}
 			},
 			borderRadius: {
@@ -65,23 +65,23 @@ const config: Config = {
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
-			fontSize: {
-				sm: '0.750rem',
-				base: '1rem',
-				xl: '1.333rem',
-				'2xl': '1.777rem',
-				'3xl': '2.369rem',
-				'4xl': '3.158rem',
-				'5xl': '4.210rem'
-			},
+			// fontSize: {
+			// 	sm: '0.750rem',
+			// 	base: '1rem',
+			// 	xl: '1.333rem',
+			// 	'2xl': '1.777rem',
+			// 	'3xl': '2.369rem',
+			// 	'4xl': '3.158rem',
+			// 	'5xl': '4.210rem'
+			// },
 			fontFamily: {
 				heading: 'Arimo',
 				body: 'Open Sans'
 			},
-			fontWeight: {
-				normal: '400',
-				bold: '700'
-			},
+			// fontWeight: {
+			// 	normal: '400',
+			// 	bold: '700'
+			// },
 			keyframes: {
 				'accordion-down': {
 					from: { height: '0' },
