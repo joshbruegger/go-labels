@@ -302,7 +302,9 @@
 								<div class="grid gap-2">
 									{#if question.type === 'multiple-choice'}
 										{#each question.choices ?? [] as choice (choice.$id)}
-											<div class="flex items-center gap-3 rounded-md border bg-card p-2 shadow-sm">
+											<div
+												class="flex items-center gap-3 rounded-md border bg-card p-2 pl-4 shadow-sm"
+											>
 												<InlineEdit
 													value={choice.text}
 													onChangeCallback={(value) => handleChoiceTextChange(choice, value)}
