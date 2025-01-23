@@ -104,6 +104,37 @@
 		}
 	}
 
+	async function addDescription(question: Question) {
+		question.description = 'Insert description here...'; // optimistic UI update
+		try {
+			await postUpdate('questions', question.$id, { description: question.description });
+		} catch (e) {
+			toast.error('Error updating question!', {
+				description: e instanceof Error ? e.message : 'Please try again.'
+			});
+			// rollback to original state if there's an error
+			question.description = undefined;
+		} finally {
+			return question.description;
+		}
+	}
+
+	async function handleQuestionDescriptionChange(question: Question, newValue: string) {
+		const original = question.text; // save for rollback
+		question.description = newValue; // optimistic UI update
+		try {
+			await postUpdate('questions', question.$id, { description: question.description });
+		} catch (e) {
+			toast.error('Error updating question!', {
+				description: e instanceof Error ? e.message : 'Please try again.'
+			});
+			// rollback to original state if there's an error
+			question.description = original;
+		} finally {
+			return question.description;
+		}
+	}
+
 	function handleDndConsider(e: CustomEvent<DndEvent<Question>>) {
 		if (!originalQuestions) originalQuestions = [...questionsReactive];
 		questionsReactive = e.detail.items;
@@ -227,26 +258,47 @@
 	{#each questionsReactive as question, i (question.$id)}
 		<div animate:flip={{ duration: flipDurationMs }}>
 			<Card.Root class="group relative">
+				<Card.Header>
+					<Card.Title class="space-y-2">
+						<div
+							use:dragHandle
+							class="cursor-grab rounded p-1 hover:bg-muted active:cursor-grabbing"
+						>
+							<GripHorizontal class="size-5 text-muted-foreground" />
+						</div>
+						<div class="flex gap-2">
+							<span class="leading-normal">{categoryIdx}.{i + 1}</span>
+							<InlineEdit
+								value={question.text}
+								onChangeCallback={(value) => handleQuestionTextChange(question, value)}
+								class="flex-1"
+							/>
+						</div>
+					</Card.Title>
+					<Card.Description>
+						{#if question.description}
+							<InlineEdit
+								value={question.description}
+								onChangeCallback={(value) => handleQuestionDescriptionChange(question, value)}
+								class="flex-1"
+							/>
+						{:else}
+							<Button
+								variant="ghost"
+								size="sm"
+								onclick={() => addDescription(question)}
+								class="text-muted-foreground hover:text-foreground"
+							>
+								<Plus class="mr-1 size-4" />
+								Add description
+							</Button>
+						{/if}
+					</Card.Description>
+				</Card.Header>
 				<Card.Content class="flex items-start gap-3 p-4">
-					<div
-						use:dragHandle
-						class="mt-1 cursor-grab rounded p-1 hover:bg-muted active:cursor-grabbing"
-					>
-						<GripHorizontal class="size-5 text-muted-foreground" />
-					</div>
-
 					<div class="flex-1 space-y-4">
 						<div class="space-y-2">
-							<div class="flex items-center gap-2">
-								{categoryIdx}.{i + 1}
-								<InlineEdit
-									value={question.text}
-									onChangeCallback={(value) => handleQuestionTextChange(question, value)}
-									class=" "
-								/>
-							</div>
-
-							<div class="space-y-2">
+							<div class="">
 								<div class="grid gap-2">
 									{#if question.type === 'multiple-choice'}
 										{#each question.choices ?? [] as choice (choice.$id)}
