@@ -23,3 +23,9 @@ vite.config.ts.timestamp-*
 # AI
 .cline*
 .aider*
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

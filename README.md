@@ -19,7 +19,7 @@ The Green Office Labels is a programme enabling student organizations at the Uni
 - **Framework**: SvelteKit
 - **UI Components**: shadcn-svelte
 - **Authentication/Database**: Appwrite
-- **Package Manager**: bun
+- **Package Manager & Deployment server**: bun
 - **Styling**: TailwindCSS
 
 ## Development
