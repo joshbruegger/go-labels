@@ -138,10 +138,10 @@
 	import type { ComponentProps } from 'svelte';
 	import Command from 'lucide-svelte/icons/command';
 
-	import NavMain from '$lib/components/nav-main.svelte';
-	import NavProjects from '$lib/components/nav-projects.svelte';
-	import NavSecondary from '$lib/components/nav-secondary.svelte';
-	import NavUser from '$lib/components/nav-user.svelte';
+	import NavMain from '$lib/components/app/nav-main.svelte';
+	import NavProjects from '$lib/components/app/nav-projects.svelte';
+	import NavSecondary from '$lib/components/app/nav-secondary.svelte';
+	import NavUser from '$lib/components/app/nav-user.svelte';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 
 	let { ref = $bindable(null), ...restProps }: ComponentProps<typeof Sidebar.Root> = $props();
